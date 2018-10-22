@@ -1,20 +1,20 @@
 #include <iostream>
-#include <fstream>
+//#include <fstream>
 #include "main.h"
 #include "CampusVirtual.h"
 
 using namespace std;
 
 int main() {
-  cargarArchivo();
+  //cargarArchivo();
 
-  //CampusVirtual cv = CampusVirtual();
-  //cv.inicio();
+  CampusVirtual cv;
+  cv.inicio();
 
   return 0;
 }
 
-void cargarArchivo() {
+/*void cargarArchivo() {
   ifstream memoria("ajustes.txt");
 
   //Test
@@ -22,4 +22,4 @@ void cargarArchivo() {
   memoria.getline(text, 100);
   cout<<text<<endl;
 
-}
+}*/

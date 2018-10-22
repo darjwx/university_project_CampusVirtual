@@ -9,6 +9,10 @@ public:
   CampusVirtual();
   CampusVirtual(char* listaAdmins, char* listaProfs,  int* listaAlum);
   void inicio();
+  int login();
+  void menuAlumno();
+  void menuAdmin();
+  void menuProfesor();
   void gestionarUsuarios();
   void gestionarRecursos();
   void mostrarUsuarios();

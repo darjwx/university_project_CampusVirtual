@@ -1,4 +1,4 @@
 #ifndef _main_H_
 #define _main_H_
-void cargarArchivo();
+//void cargarArchivo();
 #endif //_main_H_
