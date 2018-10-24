@@ -1,4 +1,6 @@
 #include <iostream>
+
+#include "Administrator.h"
 #include "CampusVirtual.h"
 
 using namespace std;
@@ -41,14 +43,15 @@ int CampusVirtual::login() {
     Introduce el id, ver si esta en el fichero
     si esta, return 2 o 3.
   }*/
-  return 1;
+  return 3;
 }
 
 void CampusVirtual::menuAlumno() {
   int opcion = 0;
-  cout<<"1. Darse de alta en un recurso"<<endl
-  <<"2. Darse de baja en un recurso"<<endl
-  <<"3. Ver recursos que estan siendo cursados"<<endl;
+  cout<<"ALUMNOS"<<endl
+    <<"1. Darse de alta en un recurso"<<endl
+    <<"2. Darse de baja en un recurso"<<endl
+    <<"3. Ver recursos que estan siendo cursados"<<endl;
   cin>>opcion;
 
   switch (opcion) {
@@ -67,9 +70,11 @@ void CampusVirtual::menuAlumno() {
 }
 
 void CampusVirtual::menuAdmin() {
+  Administrator admin;
   int option = 0;
-  cout<<"1. Gestionar recursos"<<endl
-  <<"2. Gestionar usuarios"<<endl;
+  cout<<"ADMINISTRADORES"<<endl
+    <<"1. Gestionar recursos"<<endl
+    <<"2. Gestionar usuarios"<<endl;
   cin>>option;
 
   switch (option) {
@@ -77,7 +82,7 @@ void CampusVirtual::menuAdmin() {
       //gestionarRecursos();
     break;
     case 2:
-      //gestionarUsuarios();
+      admin.gestionarUsuarios();
     break;
     default :
       cout<<"Opcion erronea"<<endl;
@@ -86,8 +91,9 @@ void CampusVirtual::menuAdmin() {
 
 void CampusVirtual::menuProfesor() {
   int option = 0;
-  cout<<"1. Modificar recursos"<<endl
-  <<"2. Calificar alumnos"<<endl;
+  cout<<"PROFESORES"<<endl
+    <<"1. Modificar recursos"<<endl
+    <<"2. Calificar alumnos"<<endl;
   cin>>option;
 
   switch (option) {

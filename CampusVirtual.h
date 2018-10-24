@@ -13,7 +13,6 @@ public:
   void menuAlumno();
   void menuAdmin();
   void menuProfesor();
-  void gestionarUsuarios();
   void gestionarRecursos();
   void mostrarUsuarios();
   void mostrarRecursos();
