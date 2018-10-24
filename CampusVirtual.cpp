@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 
 #include "Administrator.h"
 #include "CampusVirtual.h"
@@ -22,33 +23,68 @@ void CampusVirtual::inicio() {
       menuAdmin();
     break;
     default :
-      cout<<"Error en la seleccion de usuario"<<endl;
+      cout<<"Usuario incorrecto"<<endl;
   }
 }
 
 //1- alumno, 2-profesor, 3-admin
 int CampusVirtual::login() {
-  //TEMP
-  /*string nombre;
-  cout<<"Introduce tu nombre"<<endl;
+  string nombre;
+  int user;
+  char* id = new char[9];
+
+  cout<<"LOGIN || UC3M Campus Virtual"<<endl;
+  cout<<"Usuario: alumno(1),profesor(2) o admin(3) ";
+  cin>>user;
+  cout<<endl<<"Nombre: ";
   cin>>nombre;
-  Detectar el tipo de usuario. Alumno o Profesor/Admin.
-  Dividiendo el fichero de usuarios,
-  o buscar el nombre en diferente ficheros
-  Usar: bool alumnos.
-  if(alumno) {
-    Introduce tu nia. Ver si el nia esta en el fichero.
-    si esta return 1
+  cout<<endl<<"NIA/ID: ";
+  cin>>id;
+  string data = nombre + " " + id;
+
+  if(user == 1) {
+    string line;
+    fstream fsalum("alumnos.dat", ios::in | ios::binary);
+    fsalum.seekg(0,ios::beg);
+    while(getline(fsalum,line)) {
+      if(line.find(data, 0) != string::npos) {
+        delete[] id;
+        return 1;
+      }
+    }
+
+  } else if(user == 2) {
+    string line;
+    fstream fsprof("profesores.dat", ios::in | ios::binary);
+    fsprof.seekg(0,ios::beg);
+    while(getline(fsprof,line)) {
+      if(line.find(data, 0) != string::npos) {
+        delete[] id;
+        return 2;
+      }
+    }
+
+  } else if(user == 3) {
+    string line;
+    fstream fsadmin("admins.dat", ios::in | ios::binary);
+    fsadmin.seekg(0,ios::beg);
+    while(getline(fsadmin,line)) {
+      if(line.find(data, 0) != string::npos) {
+        delete[] id;
+        return 3;
+      }
+    }
+
   } else {
-    Introduce el id, ver si esta en el fichero
-    si esta, return 2 o 3.
-  }*/
-  return 3;
+    cout<<"Tipo de ususario incorrecto"<<endl;
+  }
+  delete[] id;
+  return 0;
 }
 
 void CampusVirtual::menuAlumno() {
   int opcion = 0;
-  cout<<"ALUMNOS"<<endl
+  cout<<endl<<"ALUMNOS"<<endl
     <<"1. Darse de alta en un recurso"<<endl
     <<"2. Darse de baja en un recurso"<<endl
     <<"3. Ver recursos que estan siendo cursados"<<endl;
@@ -72,7 +108,7 @@ void CampusVirtual::menuAlumno() {
 void CampusVirtual::menuAdmin() {
   Administrator admin;
   int option = 0;
-  cout<<"ADMINISTRADORES"<<endl
+  cout<<endl<<"ADMINISTRADORES"<<endl
     <<"1. Gestionar recursos"<<endl
     <<"2. Gestionar usuarios"<<endl;
   cin>>option;
@@ -91,7 +127,7 @@ void CampusVirtual::menuAdmin() {
 
 void CampusVirtual::menuProfesor() {
   int option = 0;
-  cout<<"PROFESORES"<<endl
+  cout<<endl<<"PROFESORES"<<endl
     <<"1. Modificar recursos"<<endl
     <<"2. Calificar alumnos"<<endl;
   cin>>option;
