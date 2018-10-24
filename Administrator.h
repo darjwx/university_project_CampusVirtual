@@ -20,5 +20,7 @@ public:
   void addUsuarios(int type);
   void removeUsuarios();
   void modificarDatos();
+  void showLista(int user);
+  void getLista();
 };
 #endif //_Administrator_H_

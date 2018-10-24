@@ -4,6 +4,7 @@
 
 #include "Alumno.h"
 #include "Administrator.h"
+#include "Teacher.h"
 
 using namespace std;
 
@@ -24,7 +25,8 @@ void Administrator::gestionarUsuarios() {
 
   cout<<"1. Añadir nuevos usuarios"<<endl
       <<"2. Modificar datos  de usuarios existentes"<<endl
-      <<"3. Eliminar usuarios"<<endl;
+      <<"3. Eliminar usuarios"<<endl
+      <<"4. Lista de usuarios registrados"<<endl;
   cin>>option;
 
   if(option == 1) {
@@ -51,6 +53,26 @@ void Administrator::gestionarUsuarios() {
 
   } else if(option == 3) {
 
+  } else if(option == 4) {
+    int a = 0;
+    cout<<"1. Alumnos"<<endl
+      <<"2. Profesores"<<endl
+      <<"3. Administradores"<<endl;
+    cin>>a;
+
+      switch(a) {
+        case 1:
+          showLista(a);
+        break;
+        case 2:
+          showLista(a);
+        break;
+        case 3:
+          showLista(a);
+        break;
+        default :
+          cout<<"Opcion erronea"<<endl;
+      }
   } else {
     cout<<"Opcion erronea"<<endl;
   }
@@ -137,4 +159,26 @@ void Administrator::addUsuarios(int type) {
     cout<<"Opcion erronea"<<endl;
   }
 
+}
+
+void Administrator::showLista(int user) {
+  if(user == 1) {
+    Alumno alumno;
+    alumno.getLista();
+  } else if(user == 2) {
+    Teacher teacher;
+    teacher.getLista();
+  } else if(user == 3) {
+    getLista();
+  } else {
+    cout<<"Tipo de usuario erroneo"<<endl;
+  }
+}
+
+void Administrator::getLista() {
+  string linea;
+  fstream fsadmin("admins.dat", ios::in | ios::binary);
+  while(getline(fsadmin,linea)) {
+    cout<<linea<<endl;
+  }
 }
