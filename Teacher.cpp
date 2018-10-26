@@ -11,9 +11,11 @@ Teacher::Teacher() {
 }
 
 void Teacher::getLista() {
+  int n = 0;
   string linea;
   fstream fsprof("profesores.dat", ios::in | ios::binary);
   while(getline(fsprof,linea)) {
-    cout<<linea<<endl;
+    cout<<n<<". "<<linea<<endl;
+    ++n;
   }
 }

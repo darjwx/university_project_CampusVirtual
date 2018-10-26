@@ -11,9 +11,11 @@ Alumno::Alumno() {
 }
 
 void Alumno::getLista() {
+  int n = 0;
   string linea;
   fstream fsalum("alumnos.dat", ios::in | ios::binary);
   while(getline(fsalum,linea)) {
-    cout<<linea<<endl;
+    cout<<n<<". "<<linea<<endl;
+    ++n;
   }
 }

@@ -1,3 +1,7 @@
+//TODO
+//Simplificar el codigo para no tener que estar preguntando
+//Todo el rato sobre el tipo de usuario al que vas a hacer modificaciones
+
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -50,6 +54,7 @@ void Administrator::gestionarUsuarios() {
           cout<<"Opcion erronea"<<endl;
       }
   } else if(option == 2) {
+    modificarDatos();
 
   } else if(option == 3) {
 
@@ -176,9 +181,150 @@ void Administrator::showLista(int user) {
 }
 
 void Administrator::getLista() {
+  int n = 0;
   string linea;
   fstream fsadmin("admins.dat", ios::in | ios::binary);
   while(getline(fsadmin,linea)) {
-    cout<<linea<<endl;
+    cout<<n<<". "<<linea<<endl;
+    ++n;
+  }
+}
+
+void Administrator::modificarDatos() {
+  int a = 0;
+  int line = 0;
+  cout<<"1. Alumnos"<<endl
+    <<"2. Profesores"<<endl
+    <<"3. Administradores"<<endl;
+  cin>>a;
+
+  if(a == 1) {
+    string nombre;
+    char* nia = new char[9];
+    string l;
+    int n = 0;
+    fstream fsalum("alumnos.dat", ios::out | ios::in | ios::binary);
+    fstream fstemp("temp.dat", ios::out | ios::in | ios::trunc | ios::binary);
+    showLista(a);
+    cout<<"Alumno a modificar(linea): "<<endl;
+    cin>>line;
+
+    cout<<"Nuevo nombre: "<<endl;
+    cin>>nombre;
+    cout<<"Nuevo NIA: "<<endl;
+    cin>>nia;
+    string result = nombre + " " + nia;
+
+    //Copia fsalum en un archivo temporal con la llinea
+    //seleccionada modoficada
+    while(getline(fsalum,l)) {
+      fsalum.seekp(fsalum.tellp());
+      fstemp.seekp(fstemp.tellp());
+
+      if(n == line) {
+        fstemp << result<< "\n" << flush;
+      } else {
+        fstemp << l << "\n" << flush;
+      }
+      ++n;
+    }
+    fsalum.close();
+
+    fstemp.seekp(0);
+    //Elimina el contenido para poder sobreescribir
+    fsalum.open("alumnos.dat", ios::out | ios::trunc | ios::binary);
+    while(getline(fstemp,l)) {
+      //cout<<l<<endl;
+      fsalum.seekp(fsalum.tellp());
+      fstemp.seekp(fstemp.tellp());
+      fsalum << l << "\n" << flush;
+    }
+
+  } else if(a == 2) {
+    string nombre;
+    char* id = new char[9];
+    string l;
+    int n = 0;
+    fstream fsprof("profesores.dat", ios::out | ios::in | ios::binary);
+    fstream fstemp("temp.dat", ios::out | ios::in | ios::trunc | ios::binary);
+    showLista(a);
+    cout<<"Profesor a modificar(linea): "<<endl;
+    cin>>line;
+
+    cout<<"Nuevo profesor: "<<endl;
+    cin>>nombre;
+    cout<<"Nuevo ID: "<<endl;
+    cin>>id;
+    string result = nombre + " " + id;
+
+    //Copia fsalum en un archivo temporal con la llinea
+    //seleccionada modoficada
+    while(getline(fsprof,l)) {
+      fsprof.seekp(fsprof.tellp());
+      fstemp.seekp(fstemp.tellp());
+
+      if(n == line) {
+        fstemp << result<< "\n" << flush;
+      } else {
+        fstemp << l << "\n" << flush;
+      }
+      ++n;
+    }
+    fsprof.close();
+
+    fstemp.seekp(0);
+    //Elimina el contenido para poder sobreescribir
+    fsprof.open("profesores.dat", ios::out | ios::trunc | ios::binary);
+    while(getline(fstemp,l)) {
+      //cout<<l<<endl;
+      fsprof.seekp(fsprof.tellp());
+      fstemp.seekp(fstemp.tellp());
+      fsprof << l << "\n" << flush;
+    }
+
+  } else if(a == 3) {
+    string nombre;
+    char* id = new char[9];
+    string l;
+    int n = 0;
+    fstream fsadmin("admins.dat", ios::out | ios::in | ios::binary);
+    fstream fstemp("temp.dat", ios::out | ios::in | ios::trunc | ios::binary);
+    showLista(a);
+    cout<<"Profesor a modificar(linea): "<<endl;
+    cin>>line;
+
+    cout<<"Nuevo profesor: "<<endl;
+    cin>>nombre;
+    cout<<"Nuevo ID: "<<endl;
+    cin>>id;
+    string result = nombre + " " + id;
+
+    //Copia fsalum en un archivo temporal con la llinea
+    //seleccionada modoficada
+    while(getline(fsadmin,l)) {
+      fsadmin.seekp(fsadmin.tellp());
+      fstemp.seekp(fstemp.tellp());
+
+      if(n == line) {
+        fstemp << result<< "\n" << flush;
+      } else {
+        fstemp << l << "\n" << flush;
+      }
+      ++n;
+    }
+    fsadmin.close();
+
+    fstemp.seekp(0);
+    //Elimina el contenido para poder sobreescribir
+    fsadmin.open("profesores.dat", ios::out | ios::trunc | ios::binary);
+    while(getline(fstemp,l)) {
+      //cout<<l<<endl;
+      fsadmin.seekp(fsadmin.tellp());
+      fstemp.seekp(fstemp.tellp());
+      fsadmin << l << "\n" << flush;
+    }
+
+  } else {
+    cout<<"Opcion erronea"<<endl;
   }
 }
