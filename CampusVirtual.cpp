@@ -1,3 +1,5 @@
+//TODO fix endless loops in menus when entering chars
+
 #include <iostream>
 #include <fstream>
 
@@ -31,74 +33,98 @@ void CampusVirtual::inicio() {
 int CampusVirtual::login() {
   string nombre;
   int user;
+  bool error = true;
   char* id = new char[9];
 
-  cout<<"LOGIN || UC3M Campus Virtual"<<endl;
-  cout<<"Usuario: alumno(1),profesor(2) o admin(3) ";
-  cin>>user;
-  cout<<endl<<"Nombre: ";
-  cin>>nombre;
-  cout<<endl<<"NIA/ID: ";
-  cin>>id;
-  string data = nombre + " " + id;
+  do{
+    /*ANSI escape codes:
+    \033[2j clears the entire screen.
+    \033[1;1H position the cursor at row 1, column 1.*/
+    cout<<"\033[2J\033[1;1H";
+    cout<<"LOGIN || UC3M Campus Virtual"<<endl;
+    cout<<"Usuario: alumno(1),profesor(2) o admin(3) ";
+    cin>>user;
+  //Endless loop when you enter a float.
+  } while (user > 3 || user < 1);
 
-  if(user == 1) {
-    string line;
-    fstream fsalum("alumnos.dat", ios::in | ios::binary);
-    fsalum.seekg(0,ios::beg);
-    while(getline(fsalum,line)) {
-      if(line.find(data, 0) != string::npos) {
-        delete[] id;
-        return 1;
+  do {
+    /*ANSI escape codes:
+    \033[2j clears the entire screen.
+    \033[1;1H position the cursor at row 1, column 1.*/
+    cout << "\033[2J\033[1;1H";
+    cout<<endl<<"Nombre: ";
+    cin>>nombre;
+    cout<<endl<<"NIA/ID: ";
+    cin>>id;
+    string data = nombre + " " + id;
+
+    if(user == 1) {
+      string line;
+      fstream fs("alumnos.dat", ios::in | ios::binary);
+      fs.seekg(0,ios::beg);
+      while(getline(fs,line)) {
+        if(line.find(data, 0) != string::npos) {
+          error = false;
+        }
       }
-    }
+      fs.close();
 
-  } else if(user == 2) {
-    string line;
-    fstream fsprof("profesores.dat", ios::in | ios::binary);
-    fsprof.seekg(0,ios::beg);
-    while(getline(fsprof,line)) {
-      if(line.find(data, 0) != string::npos) {
-        delete[] id;
-        return 2;
+    } else if(user == 2) {
+      string line;
+      fstream fs("profesores.dat", ios::in | ios::binary);
+      fs.seekg(0,ios::beg);
+      while(getline(fs,line)) {
+        if(line.find(data, 0) != string::npos) {
+          error = false;
+        }
       }
-    }
+      fs.close();
 
-  } else if(user == 3) {
-    string line;
-    fstream fsadmin("admins.dat", ios::in | ios::binary);
-    fsadmin.seekg(0,ios::beg);
-    while(getline(fsadmin,line)) {
-      if(line.find(data, 0) != string::npos) {
-        delete[] id;
-        return 3;
+    } else if(user == 3) {
+      string line;
+      fstream fs("admins.dat", ios::in | ios::binary);
+      fs.seekg(0,ios::beg);
+      while(getline(fs,line)) {
+        if(line.find(data, 0) != string::npos) {
+          error = false;
+        }
       }
+      fs.close();
     }
+    if(error) {
+      cout<<"Usuario no encontrado. Prueba otra vez"<<endl;
+    }
+  } while (error);
 
-  } else {
-    cout<<"Tipo de ususario incorrecto"<<endl;
-  }
   delete[] id;
-  return 0;
+  return user;
 }
 
 void CampusVirtual::menuAlumno() {
-  int opcion = 0;
+  char option = '0';
+  /*ANSI escape codes:
+  \033[2j clears the entire screen.
+  \033[1;1H position the cursor at row 1, column 1.*/
+  cout<<"\033[2J\033[1;1H";
   cout<<endl<<"ALUMNOS"<<endl
     <<"1. Darse de alta en un recurso"<<endl
     <<"2. Darse de baja en un recurso"<<endl
-    <<"3. Ver recursos que estan siendo cursados"<<endl;
-  cin>>opcion;
+    <<"3. Ver recursos que estan siendo cursados"<<endl
+    <<"<. Cerrar sesion"<<endl;
+  cin>>option;
 
-  switch (opcion) {
-    case 1:
+  switch (option) {
+    case '1':
       //altaRecurso();
     break;
-    case 2:
+    case '2':
       //bajaRecurso();
     break;
-    case 3:
+    case '3':
       //mostrarRecursos();
+    break;
+    case '<':
+      cerrarSesion();
     break;
     default :
       cout<<"Opcion erronea"<<endl;
@@ -107,18 +133,26 @@ void CampusVirtual::menuAlumno() {
 
 void CampusVirtual::menuAdmin() {
   Administrator admin;
-  int option = 0;
+  char option = '0';
+  /*ANSI escape codes:
+  \033[2j clears the entire screen.
+  \033[1;1H position the cursor at row 1, column 1.*/
+  cout<<"\033[2J\033[1;1H";
   cout<<endl<<"ADMINISTRADORES"<<endl
     <<"1. Gestionar recursos"<<endl
-    <<"2. Gestionar usuarios"<<endl;
+    <<"2. Gestionar usuarios"<<endl
+    <<"<. Cerrar sesion"<<endl;
   cin>>option;
 
   switch (option) {
-    case 1:
+    case '1':
       //gestionarRecursos();
     break;
-    case 2:
+    case '2':
       admin.gestionarUsuarios();
+    break;
+    case '<':
+      cerrarSesion();
     break;
     default :
       cout<<"Opcion erronea"<<endl;
@@ -126,20 +160,32 @@ void CampusVirtual::menuAdmin() {
 }
 
 void CampusVirtual::menuProfesor() {
-  int option = 0;
+  char option = '0';
+  /*ANSI escape codes:
+  \033[2j clears the entire screen.
+  \033[1;1H position the cursor at row 1, column 1.*/
+  cout<<"\033[2J\033[1;1H";
   cout<<endl<<"PROFESORES"<<endl
     <<"1. Modificar recursos"<<endl
-    <<"2. Calificar alumnos"<<endl;
+    <<"2. Calificar alumnos"<<endl
+    <<"<. Cerrar sesion"<<endl;
   cin>>option;
 
   switch (option) {
-    case 1:
+    case '1':
       //gestionarRecursos();
     break;
-    case 2:
+    case '2':
       //calificar();
     break;
-    default :
+    case '<':
+      cerrarSesion();
+    break;
+  default :
       cout<<"Opcion erronea"<<endl;
-  }
+}
+}
+
+void CampusVirtual::cerrarSesion() {
+  inicio();
 }

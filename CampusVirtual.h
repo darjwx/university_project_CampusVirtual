@@ -19,5 +19,6 @@ public:
   void calificar();
   void altaRecurso();
   void bajaRecurso();
+  void cerrarSesion();
 };
 #endif //_CampusVirtual_H_

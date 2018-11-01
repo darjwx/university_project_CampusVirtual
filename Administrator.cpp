@@ -1,7 +1,3 @@
-//TODO
-//Simplificar el codigo para no tener que estar preguntando
-//Todo el rato sobre el tipo de usuario al que vas a hacer modificaciones
-
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -25,37 +21,51 @@ void Administrator::modificarContenido() {
 }
 
 void Administrator::gestionarUsuarios() {
-  int option = 0;
+  char option = '0';
+  bool salir = false;
 
-  cout<<"1. Añadir nuevos usuarios"<<endl
-      <<"2. Modificar datos  de usuarios existentes"<<endl
-      <<"3. Eliminar usuarios"<<endl
-      <<"4. Lista de usuarios registrados"<<endl;
-  cin>>option;
+  do {
+    /*ANSI escape codes:
+    \033[2j clears the entire screen.
+    \033[1;1H position the cursor at row 1, column 1.*/
+    cout<<"\033[2J\033[1;1H";
+    cout<<"1. Añadir nuevos usuarios"<<endl
+        <<"2. Modificar datos  de usuarios existentes"<<endl
+        <<"3. Eliminar usuarios"<<endl
+        <<"4. Lista de usuarios registrados"<<endl
+        <<"<. Salir";
+    cin>>option;
 
-  if(option == 1) {
-    int type;
-    string user;
-    getType(&type,&user);
-    addUsuarios(type,user);
+    if(option == '1') {
+      int type;
+      string user;
+      getType(&type,&user);
+      addUsuarios(type,user);
 
-  } else if(option == 2) {
-    int type;
-    string user;
-    getType(&type,&user);
-    modificarDatos(type,user);
+    } else if(option == '2') {
+      int type;
+      string user;
+      getType(&type,&user);
+      modificarDatos(type,user);
 
-  } else if(option == 3) {
+    } else if(option == '3') {
 
-  } else if(option == 4) {
-    int type;
-    string user;
-    getType(&type,&user);
-    showLista(type);
+    } else if(option == '4') {
+      int type;
+      string user;
+      getType(&type,&user);
+      showLista(type);
 
-  } else {
-    cout<<"Opcion erronea"<<endl;
-  }
+    } else if(option == '<') {
+      salir = true;
+
+    } else {
+      cout<<"Opcion erronea"<<endl;
+    }
+  } while (!salir);
+
+  CampusVirtual cv;
+  cv.menuAdmin();
 }
 
 void Administrator::addUsuarios(int type, string user) {
@@ -68,6 +78,10 @@ void Administrator::addUsuarios(int type, string user) {
     do {
       fsalumnos.seekp(0,ios::end);
 
+      /*ANSI escape codes:
+      \033[2j clears the entire screen.
+      \033[1;1H position the cursor at row 1, column 1.*/
+      cout<<"\033[2J\033[1;1H";
       cout<<"**"<<user<<"**"<<endl;
       cout<<"Introduce el nuevo alumno: "<<endl;
       cout<<"Nombre: ";
@@ -95,6 +109,10 @@ void Administrator::addUsuarios(int type, string user) {
     do {
       fsprofesores.seekp(0,ios::end);
 
+      /*ANSI escape codes:
+      \033[2j clears the entire screen.
+      \033[1;1H position the cursor at row 1, column 1.*/
+      cout<<"\033[2J\033[1;1H";
       cout<<"**"<<user<<"**"<<endl;
       cout<<"Introduce el nuevo profesor: "<<endl;
       cout<<"Nombre: ";
@@ -121,6 +139,10 @@ void Administrator::addUsuarios(int type, string user) {
     do {
       fsadmins.seekp(0,ios::end);
 
+      /*ANSI escape codes:
+      \033[2j clears the entire screen.
+      \033[1;1H position the cursor at row 1, column 1.*/
+      cout<<"\033[2J\033[1;1H";
       cout<<"**"<<user<<"**"<<endl;
       cout<<"Introduce el nuevo administrador: "<<endl;
       cout<<"Nombre: ";
@@ -162,10 +184,22 @@ void Administrator::getLista() {
   int n = 0;
   string linea;
   fstream fsadmin("admins.dat", ios::in | ios::binary);
+
+  /*ANSI escape codes:
+  \033[2j clears the entire screen.
+  \033[1;1H position the cursor at row 1, column 1.*/
+  cout<<"\033[2J\033[1;1H";
   while(getline(fsadmin,linea)) {
     cout<<n<<". "<<linea<<endl;
     ++n;
   }
+
+  char temp;
+  do {
+    cout<<"Presiona ESC para continuar";
+    cin.get(temp);
+  //27 is ESC key in ASCII
+  } while(temp != 27);
 }
 
 void Administrator::modificarDatos(int type,string user) {
@@ -180,6 +214,10 @@ void Administrator::modificarDatos(int type,string user) {
     fstream fstemp("temp.dat", ios::out | ios::in | ios::trunc | ios::binary);
     showLista(type);
 
+    /*ANSI escape codes:
+    \033[2j clears the entire screen.
+    \033[1;1H position the cursor at row 1, column 1.*/
+    cout<<"\033[2J\033[1;1H";
     cout<<"**"<<user<<"**"<<endl;
     cout<<"Alumno a modificar(linea): "<<endl;
     cin>>line;
@@ -222,6 +260,11 @@ void Administrator::modificarDatos(int type,string user) {
     int n = 0;
     fstream fsprof("profesores.dat", ios::out | ios::in | ios::binary);
     fstream fstemp("temp.dat", ios::out | ios::in | ios::trunc | ios::binary);
+
+    /*ANSI escape codes:
+    \033[2j clears the entire screen.
+    \033[1;1H position the cursor at row 1, column 1.*/
+    cout<<"\033[2J\033[1;1H";
     showLista(type);
     cout<<"Profesor a modificar(linea): "<<endl;
     cin>>line;
@@ -265,6 +308,11 @@ void Administrator::modificarDatos(int type,string user) {
     int n = 0;
     fstream fsadmin("admins.dat", ios::out | ios::in | ios::binary);
     fstream fstemp("temp.dat", ios::out | ios::in | ios::trunc | ios::binary);
+
+    /*ANSI escape codes:
+    \033[2j clears the entire screen.
+    \033[1;1H position the cursor at row 1, column 1.*/
+    cout<<"\033[2J\033[1;1H";
     showLista(type);
     cout<<"Profesor a modificar(linea): "<<endl;
     cin>>line;
@@ -308,6 +356,11 @@ void Administrator::modificarDatos(int type,string user) {
 
 void Administrator::getType(int* type, string* user) {
   int a = 0;
+
+  /*ANSI escape codes:
+  \033[2j clears the entire screen.
+  \033[1;1H position the cursor at row 1, column 1.*/
+  cout<<"\033[2J\033[1;1H";
   cout<<"1. Alumnos"<<endl
     <<"2. Profesores"<<endl
     <<"3. Administradores"<<endl;

@@ -1,6 +1,7 @@
 #ifndef _Administrator_H_
 #define _Administrator_H_
 #include <string>
+#include "CampusVirtual.h"
 
 using namespace std;
 
