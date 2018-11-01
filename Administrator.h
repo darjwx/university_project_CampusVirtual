@@ -17,10 +17,11 @@ public:
   void modificarContenido();
   //Crear, modificar y eliminar usuarios
   void gestionarUsuarios();
-  void addUsuarios(int type);
+  void addUsuarios(int type, string);
   void removeUsuarios();
-  void modificarDatos();
+  void modificarDatos(int,string);
   void showLista(int user);
   void getLista();
+  void getType(int*,string*);
 };
 #endif //_Administrator_H_

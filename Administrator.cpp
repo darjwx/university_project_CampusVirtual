@@ -34,56 +34,31 @@ void Administrator::gestionarUsuarios() {
   cin>>option;
 
   if(option == 1) {
-    int a = 0;
-    cout<<"1. Alumnos"<<endl
-      <<"2. Profesores"<<endl
-      <<"3. Administradores"<<endl;
-    cin>>a;
+    int type;
+    string user;
+    getType(&type,&user);
+    addUsuarios(type,user);
 
-      switch(a) {
-        case 1:
-          addUsuarios(a);
-        break;
-        case 2:
-          addUsuarios(a);
-        break;
-        case 3:
-          addUsuarios(a);
-        break;
-        default :
-          cout<<"Opcion erronea"<<endl;
-      }
   } else if(option == 2) {
-    modificarDatos();
+    int type;
+    string user;
+    getType(&type,&user);
+    modificarDatos(type,user);
 
   } else if(option == 3) {
 
   } else if(option == 4) {
-    int a = 0;
-    cout<<"1. Alumnos"<<endl
-      <<"2. Profesores"<<endl
-      <<"3. Administradores"<<endl;
-    cin>>a;
+    int type;
+    string user;
+    getType(&type,&user);
+    showLista(type);
 
-      switch(a) {
-        case 1:
-          showLista(a);
-        break;
-        case 2:
-          showLista(a);
-        break;
-        case 3:
-          showLista(a);
-        break;
-        default :
-          cout<<"Opcion erronea"<<endl;
-      }
   } else {
     cout<<"Opcion erronea"<<endl;
   }
 }
 
-void Administrator::addUsuarios(int type) {
+void Administrator::addUsuarios(int type, string user) {
   if (type == 1) {
     //Alumnos
     fstream fsalumnos("alumnos.dat", ios::out | ios::in /*ios::trunc*/ | ios::binary);
@@ -93,6 +68,7 @@ void Administrator::addUsuarios(int type) {
     do {
       fsalumnos.seekp(0,ios::end);
 
+      cout<<"**"<<user<<"**"<<endl;
       cout<<"Introduce el nuevo alumno: "<<endl;
       cout<<"Nombre: ";
       cin>>nombre;
@@ -119,6 +95,7 @@ void Administrator::addUsuarios(int type) {
     do {
       fsprofesores.seekp(0,ios::end);
 
+      cout<<"**"<<user<<"**"<<endl;
       cout<<"Introduce el nuevo profesor: "<<endl;
       cout<<"Nombre: ";
       cin>>nombre;
@@ -144,6 +121,7 @@ void Administrator::addUsuarios(int type) {
     do {
       fsadmins.seekp(0,ios::end);
 
+      cout<<"**"<<user<<"**"<<endl;
       cout<<"Introduce el nuevo administrador: "<<endl;
       cout<<"Nombre: ";
       cin>>nombre;
@@ -190,22 +168,19 @@ void Administrator::getLista() {
   }
 }
 
-void Administrator::modificarDatos() {
-  int a = 0;
+void Administrator::modificarDatos(int type,string user) {
   int line = 0;
-  cout<<"1. Alumnos"<<endl
-    <<"2. Profesores"<<endl
-    <<"3. Administradores"<<endl;
-  cin>>a;
 
-  if(a == 1) {
+  if(type == 1) {
     string nombre;
     char* nia = new char[9];
     string l;
     int n = 0;
     fstream fsalum("alumnos.dat", ios::out | ios::in | ios::binary);
     fstream fstemp("temp.dat", ios::out | ios::in | ios::trunc | ios::binary);
-    showLista(a);
+    showLista(type);
+
+    cout<<"**"<<user<<"**"<<endl;
     cout<<"Alumno a modificar(linea): "<<endl;
     cin>>line;
 
@@ -240,17 +215,18 @@ void Administrator::modificarDatos() {
       fsalum << l << "\n" << flush;
     }
 
-  } else if(a == 2) {
+  } else if(type == 2) {
     string nombre;
     char* id = new char[9];
     string l;
     int n = 0;
     fstream fsprof("profesores.dat", ios::out | ios::in | ios::binary);
     fstream fstemp("temp.dat", ios::out | ios::in | ios::trunc | ios::binary);
-    showLista(a);
+    showLista(type);
     cout<<"Profesor a modificar(linea): "<<endl;
     cin>>line;
 
+    cout<<"**"<<user<<"**"<<endl;
     cout<<"Nuevo profesor: "<<endl;
     cin>>nombre;
     cout<<"Nuevo ID: "<<endl;
@@ -282,17 +258,18 @@ void Administrator::modificarDatos() {
       fsprof << l << "\n" << flush;
     }
 
-  } else if(a == 3) {
+  } else if(type == 3) {
     string nombre;
     char* id = new char[9];
     string l;
     int n = 0;
     fstream fsadmin("admins.dat", ios::out | ios::in | ios::binary);
     fstream fstemp("temp.dat", ios::out | ios::in | ios::trunc | ios::binary);
-    showLista(a);
+    showLista(type);
     cout<<"Profesor a modificar(linea): "<<endl;
     cin>>line;
 
+    cout<<"**"<<user<<"**"<<endl;
     cout<<"Nuevo profesor: "<<endl;
     cin>>nombre;
     cout<<"Nuevo ID: "<<endl;
@@ -327,4 +304,21 @@ void Administrator::modificarDatos() {
   } else {
     cout<<"Opcion erronea"<<endl;
   }
+}
+
+void Administrator::getType(int* type, string* user) {
+  int a = 0;
+  cout<<"1. Alumnos"<<endl
+    <<"2. Profesores"<<endl
+    <<"3. Administradores"<<endl;
+  cin>>a;
+
+  if(a == 1) {
+    *user = "Gestionar alumnos";
+  } else if(a == 2) {
+    *user = "Gestionar profesores";
+  } else {
+    *user = "Gestionar administradores";
+  }
+  *type = a;
 }
