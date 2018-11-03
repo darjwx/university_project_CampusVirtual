@@ -146,7 +146,7 @@ void CampusVirtual::menuAdmin() {
 
   switch (option) {
     case '1':
-      //gestionarRecursos();
+      admin.gestionarContenido();
     break;
     case '2':
       admin.gestionarUsuarios();

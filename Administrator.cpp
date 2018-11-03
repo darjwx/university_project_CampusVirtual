@@ -13,14 +13,188 @@ Administrator::Administrator() {
 }
 
 void Administrator::gestionarContenido() {
-  //TODO
+  //TODO use a dinamic array while the program is being used
+  //and just use the files to save/get the info when
+  //closing/opening the program
+  char option = '0';
+  bool salir = false;
+
+  do {
+    /*ANSI escape codes:
+    \033[2j clears the entire screen.
+    \033[1;1H position the cursor at row 1, column 1.*/
+    cout<<"\033[2J\033[1;1H";
+    cout<<"1. Añadir nuevo contenido"<<endl
+        <<"2. Modificar recursos existentes"<<endl
+        <<"3. Eliminar recursos"<<endl
+        <<"4. Lista de recursos disponibles"<<endl
+        <<"<. Salir";
+    cin>>option;
+
+    if(option == '1') {
+      int type;
+      string resource;
+      getResource(&type,&resource);
+      addRecurso(type,resource);
+
+    } else if(option == '2') {
+      int type;
+      string resource;
+      getResource(&type,&resource);
+      modificarRecurso(type,resource);
+
+    } else if(option == '3') {
+
+    } else if(option == '4') {
+      /*int type;
+      string resource;
+      getResource(&type,&resource);
+      showLista(type);*/
+
+    } else if(option == '<') {
+      salir = true;
+
+    } else {
+      cout<<"Opcion erronea"<<endl;
+    }
+  } while (!salir);
+
+  CampusVirtual cv;
+  cv.menuAdmin();
 }
 
-void Administrator::modificarContenido() {
+void Administrator::addRecurso(int type, string recurso) {
+  if (type == 1) {
+    //Asignaturas
+    fstream fs("asignaturas.dat", ios::out | ios::in /*ios::trunc*/ | ios::binary);
+    string nombre;
+    string profesor;
+    string titulacion;
+    int creds;
+    char more;
+    do {
+      fs.seekp(0,ios::end);
+
+      /*ANSI escape codes:
+      \033[2j clears the entire screen.
+      \033[1;1H position the cursor at row 1, column 1.*/
+      cout<<"\033[2J\033[1;1H";
+      cout<<"**"<<recurso<<"**"<<endl;
+      cout<<"Introduce el nuevo recurso: "<<endl;
+      cout<<"Nombre: ";
+      cin>>nombre;
+      cout<<endl<<"Titulacion: ";
+      cin>>titulacion;
+      cout<<endl<<"Profesor: ";
+      cin>>profesor;
+      cout<<endl<<"Creditos: ";
+      cin>>creds;
+
+      string result = nombre + " " + titulacion + " "
+        + profesor + " " + /*weird symbols in output file*/(char)creds;
+      //fsalumnos.write(reinterpret_cast <char *>(&result), sizeof(result));
+      fs << result << "\n" << flush;
+
+      cout<<"¿Añadir mas asignaturas? (y/n)"<<endl;
+      cin>>more;
+    } while(more == 'y');
+    //Sometimes I get munmap_chunk(): invalid pointer
+    //after executing this line. Happens if nia's length is more than 9?
+    fs.close();
+  } else if(type == 2) {
+    //Seminarios
+    fstream fs("seminarios.dat", ios::out | ios::in /*ios::trunc*/ | ios::binary);
+    string nombre;
+    string ponente;
+    string supervisor;
+    int capacity;
+    char more;
+    do {
+      fs.seekp(0,ios::end);
+
+      /*ANSI escape codes:
+      \033[2j clears the entire screen.
+      \033[1;1H position the cursor at row 1, column 1.*/
+      cout<<"\033[2J\033[1;1H";
+      cout<<"**"<<recurso<<"**"<<endl;
+      cout<<"Introduce el nuevo recurso: "<<endl;
+      cout<<"Nombre: ";
+      cin>>nombre;
+      cout<<endl<<"Supervisor: ";
+      cin>>supervisor;
+      cout<<endl<<"Ponente: ";
+      cin>>ponente;
+      //I have to figure out how to handle dates first
+      /*cout<<endl<<"Fecha: ";
+      cout<<endl<<"Dia: ";
+      cout<<endl<<"Mes: ";
+      cout<<endl<<"Año: ";
+      cout<<endl<<"Capacidad: ";*/
+      cout<<"Capacidad: "<<endl;
+      cin>>capacity;
+
+      string result = nombre + " " + supervisor + " "
+        + ponente + " " + /*weird symbols in output file*/(char)capacity;
+      //fsalumnos.write(reinterpret_cast <char *>(&result), sizeof(result));
+      fs << result << "\n" << flush;
+
+      cout<<"¿Añadir mas seminarios? (y/n)"<<endl;
+      cin>>more;
+    } while(more == 'y');
+    //Sometimes I get munmap_chunk(): invalid pointer
+    //after executing this line. Happens if nia's length is more than 9?
+    fs.close();
+  } else if(type == 3) {
+    //TFE
+    fstream fs("tfe.dat", ios::out | ios::in /*ios::trunc*/ | ios::binary);
+    string nombre;
+    string titulacion;
+    string tutor;
+    string coTutor;
+    char more;
+    do {
+      fs.seekp(0,ios::end);
+
+      /*ANSI escape codes:
+      \033[2j clears the entire screen.
+      \033[1;1H position the cursor at row 1, column 1.*/
+      cout<<"\033[2J\033[1;1H";
+      cout<<"**"<<recurso<<"**"<<endl;
+      cout<<"Introduce el nuevo recurso: "<<endl;
+      cout<<"Nombre: ";
+      cin>>nombre;
+      cout<<endl<<"Titulacion: ";
+      cin>>titulacion;
+      cout<<endl<<"Tutor: ";
+      cin>>tutor;
+      cout<<"Co-tutor: "<<endl;
+      cin>>coTutor;
+
+      string result = nombre + " " + titulacion + " "
+        + tutor + " " + coTutor;
+      //fsalumnos.write(reinterpret_cast <char *>(&result), sizeof(result));
+      fs << result << "\n" << flush;
+
+      cout<<"¿Añadir mas TFEs? (y/n)"<<endl;
+      cin>>more;
+    } while(more == 'y');
+    //Sometimes I get munmap_chunk(): invalid pointer
+    //after executing this line. Happens if nia's length is more than 9?
+    fs.close();
+  } else {
+    cout<<"Opcion erronea"<<endl;
+  }
+
+}
+
+void Administrator::modificarRecurso(int type, string recurso) {
   //TODO
 }
 
 void Administrator::gestionarUsuarios() {
+  //TODO use a dinamic array while the program is being used
+  //and just use the files to save/get the info when
+  //closing/opening the program
   char option = '0';
   bool salir = false;
 
@@ -354,6 +528,7 @@ void Administrator::modificarDatos(int type,string user) {
   }
 }
 
+//Maybe merge getType and getResource in a unique function?
 void Administrator::getType(int* type, string* user) {
   int a = 0;
 
@@ -372,6 +547,28 @@ void Administrator::getType(int* type, string* user) {
     *user = "Gestionar profesores";
   } else {
     *user = "Gestionar administradores";
+  }
+  *type = a;
+}
+
+void Administrator::getResource(int* type, string* resource) {
+  int a = 0;
+
+  /*ANSI escape codes:
+  \033[2j clears the entire screen.
+  \033[1;1H position the cursor at row 1, column 1.*/
+  cout<<"\033[2J\033[1;1H";
+  cout<<"1. Asignaturas"<<endl
+    <<"2. Seminarios"<<endl
+    <<"3. TFE"<<endl;
+  cin>>a;
+
+  if(a == 1) {
+    *resource = "Gestion asignaturas";
+  } else if(a == 2) {
+    *resource = "Gestionar seminarios";
+  } else {
+    *resource = "Gestionar RFE";
   }
   *type = a;
 }

@@ -14,8 +14,9 @@ public:
   Administrator(string name, char id);
   //Eliminar o subir contenido.
   void gestionarContenido();
-  //modificar contenido
-  void modificarContenido();
+  void getResource(int*,string*);
+  void addRecurso(int,string);
+  void modificarRecurso(int, string);
   //Crear, modificar y eliminar usuarios
   void gestionarUsuarios();
   void addUsuarios(int type, string);
