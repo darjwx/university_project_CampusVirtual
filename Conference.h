@@ -1,6 +1,7 @@
 #ifndef _Conference_H_
 #define _Conference_H_
 #include <string>
+#include <fstream>
 #include "Date.h"
 
 using namespace std;
@@ -28,6 +29,7 @@ public:
   Date* getDate();
   int getCapacity();
   char* getAlumnos();
+  void showList();
 
 };
 #endif //_Conference_H_

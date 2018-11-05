@@ -5,6 +5,9 @@
 #include "Alumno.h"
 #include "Administrator.h"
 #include "Teacher.h"
+#include "Subjects.h"
+#include "Conference.h"
+#include "TrabajoFinEstudios.h"
 
 using namespace std;
 
@@ -46,10 +49,10 @@ void Administrator::gestionarContenido() {
     } else if(option == '3') {
 
     } else if(option == '4') {
-      /*int type;
+      int type;
       string resource;
       getResource(&type,&resource);
-      showLista(type);*/
+      showRecurso(type);
 
     } else if(option == '<') {
       salir = true;
@@ -70,7 +73,7 @@ void Administrator::addRecurso(int type, string recurso) {
     string nombre;
     string profesor;
     string titulacion;
-    int creds;
+    char creds;
     char more;
     do {
       fs.seekp(0,ios::end);
@@ -91,7 +94,7 @@ void Administrator::addRecurso(int type, string recurso) {
       cin>>creds;
 
       string result = nombre + " " + titulacion + " "
-        + profesor + " " + /*weird symbols in output file*/(char)creds;
+        + profesor + " " + creds;
       //fsalumnos.write(reinterpret_cast <char *>(&result), sizeof(result));
       fs << result << "\n" << flush;
 
@@ -107,7 +110,7 @@ void Administrator::addRecurso(int type, string recurso) {
     string nombre;
     string ponente;
     string supervisor;
-    int capacity;
+    char capacity;
     char more;
     do {
       fs.seekp(0,ios::end);
@@ -134,7 +137,7 @@ void Administrator::addRecurso(int type, string recurso) {
       cin>>capacity;
 
       string result = nombre + " " + supervisor + " "
-        + ponente + " " + /*weird symbols in output file*/(char)capacity;
+        + ponente + " " + capacity;
       //fsalumnos.write(reinterpret_cast <char *>(&result), sizeof(result));
       fs << result << "\n" << flush;
 
@@ -188,7 +191,190 @@ void Administrator::addRecurso(int type, string recurso) {
 }
 
 void Administrator::modificarRecurso(int type, string recurso) {
-  //TODO
+  int line = 0;
+
+  if(type == 1) {
+    string nombre;
+    string titulacion;
+    string profesor;
+    char creds;
+    string l;
+    int n = 0;
+    fstream fs("asignaturas.dat", ios::out | ios::in | ios::binary);
+    fstream fstemp("temp.dat", ios::out | ios::in | ios::trunc | ios::binary);
+    showRecurso(type);
+
+    /*ANSI escape codes:
+    \033[2j clears the entire screen.
+    \033[1;1H position the cursor at row 1, column 1.*/
+    cout<<"\033[2J\033[1;1H";
+    cout<<"**"<<recurso<<"**"<<endl;
+    cout<<"Asignatura a modificar(linea): "<<endl;
+    cin>>line;
+
+    cout<<"Introduce el nuevo recurso: "<<endl;
+    cout<<"Nombre: ";
+    cin>>nombre;
+    cout<<endl<<"Titulacion: ";
+    cin>>titulacion;
+    cout<<endl<<"Profesor: ";
+    cin>>profesor;
+    cout<<endl<<"Creditos: ";
+    cin>>creds;
+    string result = nombre + " " + titulacion + " "
+      + profesor + " " + creds;
+
+    //Copia fsalum en un archivo temporal con la linea
+    //seleccionada modoficada
+    while(getline(fs,l)) {
+      fs.seekp(fs.tellp());
+      fstemp.seekp(fstemp.tellp());
+
+      if(n == line) {
+        fstemp << result<< "\n" << flush;
+      } else {
+        fstemp << l << "\n" << flush;
+      }
+      ++n;
+    }
+    fs.close();
+
+    fstemp.seekp(0);
+    //Elimina el contenido para poder sobreescribir
+    fs.open("asignaturas.dat", ios::out | ios::trunc | ios::binary);
+    while(getline(fstemp,l)) {
+      //cout<<l<<endl;
+      fs.seekp(fs.tellp());
+      fstemp.seekp(fstemp.tellp());
+      fs << l << "\n" << flush;
+    }
+    fs.close();
+    fstemp.close();
+  } else if(type == 2) {
+    string nombre;
+    string ponente;
+    string supervisor;
+    char capacity;
+    string l;
+    int n = 0;
+    fstream fs("seminarios.dat", ios::out | ios::in | ios::binary);
+    fstream fstemp("temp.dat", ios::out | ios::in | ios::trunc | ios::binary);
+    showRecurso(type);
+
+    /*ANSI escape codes:
+    \033[2j clears the entire screen.
+    \033[1;1H position the cursor at row 1, column 1.*/
+    cout<<"\033[2J\033[1;1H";
+    cout<<"**"<<recurso<<"**"<<endl;
+    cout<<"Seminario a modificar(linea): "<<endl;
+    cin>>line;
+
+    cout<<"Introduce el nuevo recurso: "<<endl;
+    cout<<"Nombre: ";
+    cin>>nombre;
+    cout<<endl<<"Supervisor: ";
+    cin>>supervisor;
+    cout<<endl<<"Ponente: ";
+    cin>>ponente;
+    //I have to figure out how to handle dates first
+    /*cout<<endl<<"Fecha: ";
+    cout<<endl<<"Dia: ";
+    cout<<endl<<"Mes: ";
+    cout<<endl<<"Año: ";
+    cout<<endl<<"Capacidad: ";*/
+    cout<<"Capacidad: "<<endl;
+    cin>>capacity;
+
+    string result = nombre + " " + supervisor + " "
+      + ponente + " " + capacity;
+    //Copia fsalum en un archivo temporal con la linea
+    //seleccionada modoficada
+    while(getline(fs,l)) {
+      fs.seekp(fs.tellp());
+      fstemp.seekp(fstemp.tellp());
+
+      if(n == line) {
+        fstemp << result<< "\n" << flush;
+      } else {
+        fstemp << l << "\n" << flush;
+      }
+      ++n;
+    }
+    fs.close();
+
+    fstemp.seekp(0);
+    //Elimina el contenido para poder sobreescribir
+    fs.open("seminarios.dat", ios::out | ios::trunc | ios::binary);
+    while(getline(fstemp,l)) {
+      //cout<<l<<endl;
+      fs.seekp(fs.tellp());
+      fstemp.seekp(fstemp.tellp());
+      fs << l << "\n" << flush;
+    }
+    fs.close();
+    fstemp.close();
+
+  } else if(type == 3) {
+    string nombre;
+    string titulacion;
+    string tutor;
+    string coTutor;
+    string l;
+    int n = 0;
+    fstream fs("tfe.dat", ios::out | ios::in | ios::binary);
+    fstream fstemp("temp.dat", ios::out | ios::in | ios::trunc | ios::binary);
+    showRecurso(type);
+
+    /*ANSI escape codes:
+    \033[2j clears the entire screen.
+    \033[1;1H position the cursor at row 1, column 1.*/
+    cout<<"\033[2J\033[1;1H";
+    cout<<"TFE a modificar(linea): "<<endl;
+    cin>>line;
+
+    cout<<"**"<<recurso<<"**"<<endl;
+    cout<<"Introduce el nuevo recurso: "<<endl;
+    cout<<"Nombre: ";
+    cin>>nombre;
+    cout<<endl<<"Titulacion: ";
+    cin>>titulacion;
+    cout<<endl<<"Tutor: ";
+    cin>>tutor;
+    cout<<"Co-tutor: "<<endl;
+    cin>>coTutor;
+
+    string result = nombre + " " + titulacion + " "
+      + tutor + " " + coTutor;
+
+    //Copia fsalum en un archivo temporal con la linea
+    //seleccionada modoficada
+    while(getline(fs,l)) {
+      fs.seekp(fs.tellp());
+      fstemp.seekp(fstemp.tellp());
+
+      if(n == line) {
+        fstemp << result<< "\n" << flush;
+      } else {
+        fstemp << l << "\n" << flush;
+      }
+      ++n;
+    }
+    fs.close();
+
+    fstemp.seekp(0);
+    //Elimina el contenido para poder sobreescribir
+    fs.open("tfe.dat", ios::out | ios::trunc | ios::binary);
+    while(getline(fstemp,l)) {
+      //cout<<l<<endl;
+      fs.seekp(fs.tellp());
+      fstemp.seekp(fstemp.tellp());
+      fs << l << "\n" << flush;
+    }
+    fs.close();
+    fstemp.close();
+
+  }
+
 }
 
 void Administrator::gestionarUsuarios() {
@@ -571,4 +757,19 @@ void Administrator::getResource(int* type, string* resource) {
     *resource = "Gestionar RFE";
   }
   *type = a;
+}
+
+void Administrator::showRecurso(int type) {
+  if(type == 1) {
+    Subjects sub;
+    sub.showList();
+  } else if(type == 2) {
+    Conference con;
+    con.showList();
+  } else if(type == 3) {
+    TrabajoFinEstudios tfe;
+    tfe.showList();
+  } else {
+    cout<<"Tipo de usuario erroneo"<<endl;
+  }
 }

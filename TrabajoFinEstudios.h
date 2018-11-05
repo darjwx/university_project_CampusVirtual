@@ -1,6 +1,7 @@
 #ifndef _TrabajoFinEstudios_H_
 #define _TrabajoFinEstudios_H_
 #include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -23,5 +24,7 @@ public:
   string getTutor();
   string getCoTutor();
   string getAlumno();
+  void showList();
+  ~TrabajoFinEstudios();
 };
 #endif //_TrabajoFinEstudios_H_

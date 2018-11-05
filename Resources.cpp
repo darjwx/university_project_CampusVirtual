@@ -3,6 +3,10 @@
 
 using namespace std;
 
+Resources::Resources() {
+  //DO NOTHING
+}
+
 Resources::Resources(char status, char id) {
   this->status = status;
   this->id = id;
@@ -22,4 +26,8 @@ void Resources::setId(char id) {
 
 char Resources::getId() {
   return id;
+}
+
+Resources::~Resources() {
+  
 }

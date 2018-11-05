@@ -2,6 +2,7 @@
 #define _Subjects_H_
 #include <iostream>
 #include <string>
+#include <fstream>
 #include "Resources.h"
 
 using namespace std;
@@ -29,5 +30,6 @@ public:
   unsigned int getCredits();
   char* getAlumnos();
   unsigned int getGrade();
+  void showList();
 };
 #endif //_Subjects_H_

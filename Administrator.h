@@ -25,5 +25,6 @@ public:
   void showLista(int user);
   void getLista();
   void getType(int*,string*);
+  void showRecurso(int);
 };
 #endif //_Administrator_H_

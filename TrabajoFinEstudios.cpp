@@ -3,6 +3,10 @@
 
 using namespace std;
 
+TrabajoFinEstudios::TrabajoFinEstudios() {
+  //DO NOTHING
+}
+
 TrabajoFinEstudios::TrabajoFinEstudios(string titulacion,string tutor,string coTutor,
     string alumno) {
   this->titulacion = titulacion;
@@ -39,4 +43,30 @@ string TrabajoFinEstudios::getCoTutor() {
 }
 string TrabajoFinEstudios::getAlumno() {
   return alumno;
+}
+
+TrabajoFinEstudios::~TrabajoFinEstudios() {
+
+}
+
+void TrabajoFinEstudios::showList() {
+  int n = 0;
+  string linea;
+  fstream fs("tfe.dat", ios::in | ios::binary);
+
+  /*ANSI escape codes:
+  \033[2j clears the entire screen.
+  \033[1;1H position the cursor at row 1, column 1.*/
+  cout<<"\033[2J\033[1;1H";
+  while(getline(fs,linea)) {
+    cout<<n<<". "<<linea<<endl;
+    ++n;
+  }
+
+  char temp;
+  do {
+    cout<<"Presiona ESC para continuar";
+    cin.get(temp);
+  //27 is ESC key in ASCII
+  } while(temp != 27);
 }

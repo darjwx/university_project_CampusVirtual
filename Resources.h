@@ -14,5 +14,6 @@ public:
   char getStatus();
   void setId(char id);
   char getId();
+  void showList();
 };
 #endif //_Resources_H_
