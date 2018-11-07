@@ -2,7 +2,7 @@
 #include <fstream>
 #include <string>
 
-#include "Teacher.h"
+#include "include/Teacher.h"
 
 using namespace std;
 

@@ -2,12 +2,12 @@
 #include <string>
 #include <fstream>
 
-#include "Alumno.h"
-#include "Administrator.h"
-#include "Teacher.h"
-#include "Subjects.h"
-#include "Conference.h"
-#include "TrabajoFinEstudios.h"
+#include "include/Alumno.h"
+#include "include/Administrator.h"
+#include "include/Teacher.h"
+#include "include/Subjects.h"
+#include "include/Conference.h"
+#include "include/TrabajoFinEstudios.h"
 
 using namespace std;
 

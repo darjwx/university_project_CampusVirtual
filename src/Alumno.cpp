@@ -2,7 +2,7 @@
 #include <fstream>
 #include <string>
 
-#include "Alumno.h"
+#include "include/Alumno.h"
 
 using namespace std;
 

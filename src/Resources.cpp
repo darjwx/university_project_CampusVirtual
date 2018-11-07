@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Resources.h"
+#include "include/Resources.h"
 
 using namespace std;
 
@@ -29,5 +29,5 @@ char Resources::getId() {
 }
 
 Resources::~Resources() {
-  
+
 }

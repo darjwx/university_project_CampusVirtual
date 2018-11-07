@@ -3,8 +3,8 @@
 #include <iostream>
 #include <fstream>
 
-#include "Administrator.h"
-#include "CampusVirtual.h"
+#include "include/Administrator.h"
+#include "include/CampusVirtual.h"
 
 using namespace std;
 

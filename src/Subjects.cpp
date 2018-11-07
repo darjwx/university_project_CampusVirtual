@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Subjects.h"
+#include "include/Subjects.h"
 
 using namespace std;
 
@@ -43,7 +43,7 @@ unsigned int Subjects::getGrade() {
 }
 
 Subjects::~Subjects() {
-  
+
 }
 
 void Subjects::showList() {

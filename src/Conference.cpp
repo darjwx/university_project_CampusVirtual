@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Conference.h"
+#include "include/Conference.h"
 
 using namespace std;
 
@@ -47,7 +47,7 @@ char* Conference::getAlumnos() {
 }
 
 Conference::~Conference() {
-  
+
 }
 
 void Conference::showList() {

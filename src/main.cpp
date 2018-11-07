@@ -1,7 +1,7 @@
 #include <iostream>
 //#include <fstream>
-#include "main.h"
-#include "CampusVirtual.h"
+#include "include/main.h"
+#include "include/CampusVirtual.h"
 
 using namespace std;
 
