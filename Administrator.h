@@ -17,6 +17,7 @@ public:
   void getResource(int*,string*);
   void addRecurso(int,string);
   void modificarRecurso(int, string);
+  void eliminarRecurso(int, string);
   //Crear, modificar y eliminar usuarios
   void gestionarUsuarios();
   void addUsuarios(int type, string);
