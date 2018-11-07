@@ -21,7 +21,7 @@ public:
   //Crear, modificar y eliminar usuarios
   void gestionarUsuarios();
   void addUsuarios(int type, string);
-  void removeUsuarios();
+  void removeUsuarios(int,string);
   void modificarDatos(int,string);
   void showLista(int user);
   void getLista();

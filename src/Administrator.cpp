@@ -538,6 +538,10 @@ void Administrator::gestionarUsuarios() {
       modificarDatos(type,user);
 
     } else if(option == '3') {
+      int type;
+      string user;
+      getType(&type,&user);
+      removeUsuarios(type,user);
 
     } else if(option == '4') {
       int type;
@@ -840,6 +844,131 @@ void Administrator::modificarDatos(int type,string user) {
 
   } else {
     cout<<"Opcion erronea"<<endl;
+  }
+}
+
+void Administrator::removeUsuarios(int type, string user) {
+  int line = 0;
+
+  if(type == 1) {
+    string l;
+    int n = 0;
+    fstream fs("alumnos.dat", ios::out | ios::in | ios::binary);
+    fstream fstemp("temp.dat", ios::out | ios::in | ios::trunc | ios::binary);
+    showLista(type);
+
+    /*ANSI escape codes:
+    \033[2j clears the entire screen.
+    \033[1;1H position the cursor at row 1, column 1.*/
+    cout<<"\033[2J\033[1;1H";
+    cout<<"**"<<user<<"**"<<endl;
+    cout<<"Alumno a eliminar(linea): "<<endl;
+    cin>>line;
+
+    //Copia fsalum en un archivo temporal con la linea
+    //seleccionada eliminada
+    while(getline(fs,l)) {
+      fs.seekp(fs.tellp());
+      fstemp.seekp(fstemp.tellp());
+
+      if(n != line) {
+        fstemp << l << "\n" << flush;
+      }
+      ++n;
+    }
+    fs.close();
+
+    fstemp.seekp(0);
+    //Elimina el contenido para poder sobreescribir
+    fs.open("alumnos.dat", ios::out | ios::trunc | ios::binary);
+    while(getline(fstemp,l)) {
+      //cout<<l<<endl;
+      fs.seekp(fs.tellp());
+      fstemp.seekp(fstemp.tellp());
+      fs << l << "\n" << flush;
+    }
+    fs.close();
+    fstemp.close();
+  } else if(type == 2) {
+    string l;
+    int n = 0;
+    fstream fs("profesores.dat", ios::out | ios::in | ios::binary);
+    fstream fstemp("temp.dat", ios::out | ios::in | ios::trunc | ios::binary);
+    showLista(type);
+
+    /*ANSI escape codes:
+    \033[2j clears the entire screen.
+    \033[1;1H position the cursor at row 1, column 1.*/
+    cout<<"\033[2J\033[1;1H";
+    cout<<"**"<<user<<"**"<<endl;
+    cout<<"profesor a eliminar(linea): "<<endl;
+    cin>>line;
+
+    //Copia fsalum en un archivo temporal con la linea
+    //seleccionada eliminada
+    while(getline(fs,l)) {
+      fs.seekp(fs.tellp());
+      fstemp.seekp(fstemp.tellp());
+
+      if(n != line) {
+        fstemp << l << "\n" << flush;
+      }
+      ++n;
+    }
+    fs.close();
+
+    fstemp.seekp(0);
+    //Elimina el contenido para poder sobreescribir
+    fs.open("profesor.dat", ios::out | ios::trunc | ios::binary);
+    while(getline(fstemp,l)) {
+      //cout<<l<<endl;
+      fs.seekp(fs.tellp());
+      fstemp.seekp(fstemp.tellp());
+      fs << l << "\n" << flush;
+    }
+    fs.close();
+    fstemp.close();
+
+  } else if(type == 3) {
+    string l;
+    int n = 0;
+    fstream fs("admins.dat", ios::out | ios::in | ios::binary);
+    fstream fstemp("temp.dat", ios::out | ios::in | ios::trunc | ios::binary);
+    showRecurso(type);
+
+    /*ANSI escape codes:
+    \033[2j clears the entire screen.
+    \033[1;1H position the cursor at row 1, column 1.*/
+    cout<<"\033[2J\033[1;1H";
+    cout<<"**"<<user<<"**"<<endl;
+    cout<<"Administrador a modificar(linea): "<<endl;
+    cin>>line;
+
+    //Copia fsalum en un archivo temporal con la linea
+    //seleccionada eliminada
+    while(getline(fs,l)) {
+      fs.seekp(fs.tellp());
+      fstemp.seekp(fstemp.tellp());
+
+      if(n != line) {
+        fstemp << l << "\n" << flush;
+      }
+      ++n;
+    }
+    fs.close();
+
+    fstemp.seekp(0);
+    //Elimina el contenido para poder sobreescribir
+    fs.open("admins.dat", ios::out | ios::trunc | ios::binary);
+    while(getline(fstemp,l)) {
+      //cout<<l<<endl;
+      fs.seekp(fs.tellp());
+      fstemp.seekp(fstemp.tellp());
+      fs << l << "\n" << flush;
+    }
+    fs.close();
+    fstemp.close();
+
   }
 }
 
