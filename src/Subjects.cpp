@@ -63,7 +63,7 @@ void Subjects::showList() {
   char temp;
   do {
     cout<<"Presiona ESC para continuar";
-    cin.get(temp);
+    cin>>temp;
   //27 is ESC key in ASCII
   } while(temp != 27);
 }
