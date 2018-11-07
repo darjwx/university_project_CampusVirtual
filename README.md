@@ -19,7 +19,7 @@ or TFE.
 
 8. Make an UML diagram.
 
-9. Give the ability to remove users and resources.
+9. ~~Give the ability to remove users and resources.~~
 
 10. General clean-up and fixes.
 
