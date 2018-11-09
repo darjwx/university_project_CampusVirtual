@@ -1,9 +1,8 @@
 #ifndef _Teacher_H_
 #define _Teacher_H_
-class Teacher{
-private:
-  char* nombre;
-  char* id;
+#include "Usuario.h"
+
+class Teacher : public Usuario {
 public:
   Teacher();
   void getLista();

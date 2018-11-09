@@ -2,13 +2,11 @@
 #define _Administrator_H_
 #include <string>
 #include "CampusVirtual.h"
+#include "Usuario.h"
 
 using namespace std;
 
-class Administrator {
-private:
-  char id;
-  string name;
+class Administrator : public Usuario {
 public:
   Administrator();
   Administrator(string name, char id);

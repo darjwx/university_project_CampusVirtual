@@ -1,9 +1,8 @@
 #ifndef _Alumno_H_
 #define _Alumno_H_
-class Alumno {
-private:
-  int nia;
-  char nombre;
+#include "Usuario.h"
+
+class Alumno : public Usuario{
 public:
   Alumno();
   Alumno(int nia, char nombre);
