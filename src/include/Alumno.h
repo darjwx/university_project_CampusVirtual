@@ -1,17 +1,18 @@
 #ifndef _Alumno_H_
 #define _Alumno_H_
-class Alumno {
-private:
-  int nia;
-  char nombre;
+#include <string>
+#include "Usuario.h"
+
+using namespace std;
+
+class Alumno : public Usuario {
 public:
   Alumno();
-  Alumno(int nia, char nombre);
-  void setNombre(char nombre);
-  void setNia(int nia);
-  int getNia();
-  char getNombre();
-  void getLista();
+  Alumno(string, string);
+  virtual void setName(string);
+  virtual bool setId(string);
+  virtual string getId();
+  virtual string getName();
 
 };
 #endif //_Alumno_H_

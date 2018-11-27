@@ -7,27 +7,31 @@
 using namespace std;
 
 Alumno::Alumno() {
-  //DO NOTHING
 }
 
-void Alumno::getLista() {
-  int n = 0;
-  string linea;
-  fstream fsalum("alumnos.dat", ios::in | ios::binary);
+void Alumno::setName(string name) {
+  this->name = name;
+}
 
-  /*ANSI escape codes:
-  \033[2j clears the entire screen.
-  \033[1;1H position the cursor at row 1, column 1.*/
-  cout<<"\033[2J\033[1;1H";
-  while(getline(fsalum,linea)) {
-    cout<<n<<". "<<linea<<endl;
-    ++n;
+bool Alumno::setId(string id) {
+  if(id.length() > 7/*|| contiene letras*/) {
+    return false;
+  } else {
+    this->id = id;
+    return true;
   }
+}
 
-  char temp;
-  do {
-    cout<<"Presiona ESC para continuar";
-    cin>>temp;
-  //27 is ESC key in ASCII
-  } while(temp != 27);
+string Alumno::getName() {
+  return name;
+}
+
+string Alumno::getId() {
+  return id;
+}
+
+ostream& operator<<(ostream& os, Alumno* a) {
+  os<<"Nombre: "<<a->getName()<<endl;
+  os<<"NIA: "<<a->getId()<<endl;
+  return os;
 }

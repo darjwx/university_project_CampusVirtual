@@ -2,29 +2,29 @@
 #define _TrabajoFinEstudios_H_
 #include <string>
 #include <fstream>
+#include "Resources.h"
+#include "Teacher.h"
 
 using namespace std;
 
-class TrabajoFinEstudios {
+class TrabajoFinEstudios : public Resources {
 private:
   string titulacion;
-  string tutor;
-  string coTutor;
-  string alumno;
+  Teacher tutor;
+  Teacher coTutor;
 public:
   TrabajoFinEstudios();
-  TrabajoFinEstudios(string titulacion,string tutor,string coTutor,
-      string alumno);
-  TrabajoFinEstudios(string titulacion,string tutor,string alumno);
-  void setTitulacion(string titulacion);
-  void setTutor(string tutor);
-  void setCoTutor(string coTutor);
-  void setAlumno(string alumno);
+  virtual void setStatus(char);
+  virtual char getStatus();
+  virtual void setId(string);
+  virtual string getId();
+  virtual void setName(string);
+  virtual string getName();
+  void setTitulacion(string);
   string getTitulacion();
-  string getTutor();
-  string getCoTutor();
-  string getAlumno();
-  void showList();
-  ~TrabajoFinEstudios();
+  void setTutor(Teacher);
+  Teacher& getTutor();
+  void setCoTutor(Teacher);
+  Teacher& getCoTutor();
 };
 #endif //_TrabajoFinEstudios_H_

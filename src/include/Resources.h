@@ -1,19 +1,22 @@
 #ifndef _Resources_H_
 #define _Resources_H_
+#include <string>
+
+using namespace std;
+
 class Resources {
-private:
+protected:
   //c: creado, i: iniciado, f:finalizado
   char status;
   //LLLNNNN: L, letra entre Aa y Zz. N, numero del 0 al 9
-  char id;
+  string id;
+  string name;
 public:
-  Resources();
-  Resources(char status, char id);
-  ~Resources();
-  void setStatus(char status);
-  char getStatus();
-  void setId(char id);
-  char getId();
-  void showList();
+  virtual void setStatus(char) = 0;
+  virtual char getStatus() = 0;
+  virtual void setId(string) = 0;
+  virtual string getId() = 0;
+  virtual void setName(string) = 0;
+  virtual string getName() = 0;
 };
 #endif //_Resources_H_

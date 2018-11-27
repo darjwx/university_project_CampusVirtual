@@ -3,33 +3,35 @@
 #include <string>
 #include <fstream>
 #include "Date.h"
+#include "Alumno.h"
+#include "Resources.h"
+#include "Teacher.h"
 
 using namespace std;
 
-class Conference {
+class Conference : public Resources{
 private:
-  string supervisor;
+  Teacher supervisor;
   string speaker;
   Date* date;
   int capacity;
-  //char* alumnos = new char[tam]
-  char* alumnos;
+  Alumno* alumnos[];
 public:
   Conference();
-  Conference(string supervisor,string speaker,Date* date,int capacity,
-      char* alumnos);
-  ~Conference();
-  void setSupervisor(string supervisor);
-  void setSpeaker(string speaker);
-  void setDate(Date* date);
-  void setCapacity(int capacity);
-  void setAlumnos(char* alumnos);
-  string getSupervisor();
+  virtual void setStatus(char);
+  virtual char getStatus();
+  virtual void setId(string);
+  virtual string getId();
+  virtual void setName(string);
+  virtual string getName();
+  void setSupervisor(Teacher);
+  Teacher& getSupervisor();
+  void setSpeaker(string);
   string getSpeaker();
+  void setDate(Date*);
   Date* getDate();
+  void setCapacity(int);
   int getCapacity();
-  char* getAlumnos();
-  void showList();
 
 };
 #endif //_Conference_H_

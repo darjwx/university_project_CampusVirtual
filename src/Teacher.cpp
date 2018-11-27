@@ -10,24 +10,37 @@ Teacher::Teacher() {
   //DO NOTHING
 }
 
-void Teacher::getLista() {
-  int n = 0;
-  string linea;
-  fstream fsprof("profesores.dat", ios::in | ios::binary);
+void Teacher::setName(string name) {
+  this->name = name;
+}
 
-  /*ANSI escape codes:
-  \033[2j clears the entire screen.
-  \033[1;1H position the cursor at row 1, column 1.*/
-  cout<<"\033[2J\033[1;1H";
-  while(getline(fsprof,linea)) {
-    cout<<n<<". "<<linea<<endl;
-    ++n;
+bool Teacher::setId(string id) {
+  if(id.length() > 7) {
+    return false;
+  } else {
+    this->id = id;
+    return true;
   }
+}
 
-  char temp;
-  do {
-    cout<<"Presiona ESC para continuar";
-    cin>>temp;
-  //27 is ESC key in ASCII
-  } while(temp != 27);
+string Teacher::getName() {
+  return name;
+}
+
+string Teacher::getId() {
+  return id;
+}
+
+Teacher& Teacher::operator=(Teacher& t) {
+  name = t.name;
+  id = t.id;
+
+  return *this;
+}
+
+ostream& operator<<(ostream& os, Teacher& t) {
+  os<<t.getName();
+  os<<t.getId();
+
+  return os;
 }

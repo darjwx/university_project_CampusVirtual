@@ -30,7 +30,7 @@ dirs:
 	@echo "Creating directories"
 	@mkdir -p $(dir $(OBJECTS))
 	@mkdir -p $(BIN_PATH)
-	@cp $(SRC_PATH)/*.dat $(BIN_PATH)
+	@cp -f $(SRC_PATH)/*.dat $(BIN_PATH)
 
 .PHONY: clean
 clean:

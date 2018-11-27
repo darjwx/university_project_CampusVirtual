@@ -4,66 +4,66 @@
 using namespace std;
 
 Subjects::Subjects() {
-  //DO NOTHING
+
 }
 
-Subjects::Subjects(string titulacion,char* teachers,unsigned int credits,
-    char* alumnos) {
+void Subjects::setStatus(char status) {
+  this->status = status;
+}
+
+char Subjects::getStatus() {
+  return status;
+}
+
+void Subjects::setId(string id) {
+  this->id = id;
+}
+
+string Subjects::getId() {
+  return id;
+}
+
+void Subjects::setName(string name) {
+  this->name = name;
+}
+
+string Subjects::getName() {
+  return name;
+}
+
+void Subjects::setTitulacion(string titulacion) {
   this->titulacion = titulacion;
-  this->teachers[0] = teachers[0];
-  this->teachers[1] = teachers[1];
-  this->credits = credits;
-  this->alumnos = alumnos;
-
-  }
-void Subjects::setTeachers(char* teachers) {
-  this->teachers[0] = teachers[0];
-  this->teachers[1] = teachers[1];
 }
+
+string Subjects::getTitulacion() {
+  return titulacion;
+}
+
 void Subjects::setCredits(unsigned int credits) {
   this->credits = credits;
 }
-void Subjects::setAlumnos(char* alumnos) {
-  this->alumnos = alumnos;
-}
-void Subjects::setGrade(unsigned int grade) {
-  this->grade = grade;
-}
-char* Subjects::getTeachers() {
-  return teachers;
-}
+
 unsigned int Subjects::getCredits() {
   return credits;
 }
-char* Subjects::getAlumnos() {
-  return alumnos;
+
+void Subjects::setGrade(unsigned int grade) {
+  this->grade = grade;
 }
+
 unsigned int Subjects::getGrade() {
   return grade;
 }
 
-Subjects::~Subjects() {
-
+void Subjects::setTeacher(Teacher t1, Teacher t2) {
+  teacher1 = t1;
+  teacher2 = t2;
 }
 
-void Subjects::showList() {
-  int n = 0;
-  string linea;
-  fstream fs("asignaturas.dat", ios::in | ios::binary);
+Teacher& Subjects::getTeacher1() {
+  return teacher1;
+}
 
-  /*ANSI escape codes:
-  \033[2j clears the entire screen.
-  \033[1;1H position the cursor at row 1, column 1.*/
-  cout<<"\033[2J\033[1;1H";
-  while(getline(fs,linea)) {
-    cout<<n<<". "<<linea<<endl;
-    ++n;
-  }
-
-  char temp;
-  do {
-    cout<<"Presiona ESC para continuar";
-    cin>>temp;
-  //27 is ESC key in ASCII
-  } while(temp != 27);
+Teacher& Subjects::getTeacher2() {
+  return teacher2;
 }
