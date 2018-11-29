@@ -435,7 +435,7 @@ void CampusVirtual::gestionarUsuarios() {
             list<Alumno*>::iterator it;
             it = listaAlumnos.begin();
 
-            for(int i = 0; i <= pos; ++i) {
+            for(int i = 0; i < pos; ++i) {
               ++it;
             }
             it = listaAlumnos.erase(it);
@@ -459,7 +459,7 @@ void CampusVirtual::gestionarUsuarios() {
             list<Teacher*>::iterator it;
             it = listaProfesores.begin();
 
-            for(int i = 0; i <= pos; ++i) {
+            for(int i = 0; i < pos; ++i) {
               ++it;
             }
             it = listaProfesores.erase(it);
@@ -483,7 +483,7 @@ void CampusVirtual::gestionarUsuarios() {
             list<Administrator*>::iterator it;
             it = listaAdmins.begin();
 
-            for(int i = 0; i <= pos; ++i) {
+            for(int i = 0; i < pos; ++i) {
               ++it;
             }
             it = listaAdmins.erase(it);
@@ -538,6 +538,7 @@ void CampusVirtual::gestionarRecursos() {
       Teacher supervisor = Teacher();
       Teacher tutor = Teacher();
       Teacher coTutor = Teacher();
+      Date* date;
       unsigned int credits;
       int capacity;
       //unsigned int grade;
@@ -620,12 +621,23 @@ void CampusVirtual::gestionarRecursos() {
             cout<<endl<<"Capacidad: ";
             cin>>capacity;
 
+            int dia,mes,anio;
+            cout<<endl<<"Fecha: ";
+            cout<<"  Dia: ";
+            cin>>dia;
+            cout<<"  Mes: ";
+            cin>>mes;
+            cout<<"  Año: ";
+            cin>>anio;
+            date = new Date(dia,mes,anio);
+
             Conference* a = new Conference();
             a->setName(nombre);
             a->setId(id);
             a->setSpeaker(speaker);
             a->setSupervisor(supervisor);
             a->setCapacity(capacity);
+            a->setDate(date);
 
             listaSeminarios.push_back(a);
             numSem = listaSeminarios.size();
@@ -787,6 +799,17 @@ void CampusVirtual::gestionarRecursos() {
             cout<<endl<<"Capacidad: ";
             cin>>capacity;
 
+            Date* date;
+            int dia,mes,anio;
+            cout<<endl<<"Fecha: ";
+            cout<<"  Dia: ";
+            cin>>dia;
+            cout<<"  Mes: ";
+            cin>>mes;
+            cout<<"  Año: ";
+            cin>>anio;
+            date = new Date(dia,mes,anio);
+
             list<Conference*>::iterator it;
 
             for(int i = 0; i <= pos; ++i) {
@@ -797,6 +820,7 @@ void CampusVirtual::gestionarRecursos() {
             (*it)->setSpeaker(speaker);
             (*it)->setSupervisor(supervisor);
             (*it)->setCapacity(capacity);
+            (*it)->setDate(date);
 
             cout<<"¿Modificar mas seminarios? (y/n)"<<endl;
             cin>>more;
@@ -877,7 +901,7 @@ void CampusVirtual::gestionarRecursos() {
             list<Subjects*>::iterator it;
             it = listaAsignaturas.begin();
 
-            for(int i = 0; i <= pos; ++i) {
+            for(int i = 0; i < pos; ++i) {
               ++it;
             }
             it = listaAsignaturas.erase(it);
@@ -901,7 +925,7 @@ void CampusVirtual::gestionarRecursos() {
             list<Conference*>::iterator it;
             it = listaSeminarios.begin();
 
-            for(int i = 0; i <= pos; ++i) {
+            for(int i = 0; i < pos; ++i) {
               ++it;
             }
             it = listaSeminarios.erase(it);
@@ -925,7 +949,7 @@ void CampusVirtual::gestionarRecursos() {
             list<TrabajoFinEstudios*>::iterator it;
             it = listaTFE.begin();
 
-            for(int i = 0; i <= pos; ++i) {
+            for(int i = 0; i < pos; ++i) {
               ++it;
             }
             it = listaTFE.erase(it);
@@ -1075,6 +1099,15 @@ void CampusVirtual::cargarListas() {
       //String to int
       int ca = stoi(l,nullptr);
       c->setCapacity(ca);
+      Date* date;
+      getline(fs,l,' ');
+      int dia = stoi(l,nullptr);
+      getline(fs,l,' ');
+      int mes = stoi(l,nullptr);
+      getline(fs,l,' ');
+      int anio = stoi(l,nullptr);
+      date = new Date(dia,mes,anio);
+      c->setDate(date);
 
       listaSeminarios.push_back(c);
     }
@@ -1124,6 +1157,7 @@ void CampusVirtual::mostrarListas(char t) {
   if(t == '1') {
     list<Alumno*>::const_iterator it;
     it = listaAlumnos.begin();
+    int i = 0;
     //Alumnos
     /*ANSI escape codes:
     \033[2j clears the entire screen.
@@ -1131,9 +1165,10 @@ void CampusVirtual::mostrarListas(char t) {
     cout<<"\033[2J\033[1;1H";
 
     while(it != listaAlumnos.end()) {
-      cout<<1<<". "<<"Alumno: "<<(*it)->getName()
+      cout<<i<<". "<<"Alumno: "<<(*it)->getName()
         <<" "<<"NIA: "<<(*it)->getId()<<endl;
-        it++;
+        ++it;
+        ++i;
     }
 
     char temp;
@@ -1145,14 +1180,17 @@ void CampusVirtual::mostrarListas(char t) {
   } else if(t == '2') {
     list<Teacher*>::const_iterator it;
     it = listaProfesores.begin();
+    int i = 0;
     //Profesores
     /*ANSI escape codes:
     \033[2j clears the entire screen.
     \033[1;1H position the cursor at row 1, column 1.*/
     cout<<"\033[2J\033[1;1H";
-    for(unsigned int i = 0; i < numProf; ++i) {
-      cout<<i+1<<". "<<"Profesor: "<<(*it)->getName()
+    while(it != listaProfesores.end()) {
+      cout<<i<<". "<<"Profesor: "<<(*it)->getName()
         <<" "<<"ID: "<<(*it)->getId()<<endl;
+        ++it;
+        ++i;
     }
 
     char temp;
@@ -1164,14 +1202,17 @@ void CampusVirtual::mostrarListas(char t) {
   } else if(t == '3') {
     list<Administrator*>::const_iterator it;
     it = listaAdmins.begin();
+    int i = 0;
     //Administradores
     /*ANSI escape codes:
     \033[2j clears the entire screen.
     \033[1;1H position the cursor at row 1, column 1.*/
     cout<<"\033[2J\033[1;1H";
-    for(unsigned int i = 0; i < numAdmin; ++i) {
-      cout<<i+1<<". "<<"Administrador: "<<(*it)->getName()
+    while(it != listaAdmins.end()) {
+      cout<<i<<". "<<"Administrador: "<<(*it)->getName()
         <<" "<<"ID: "<<(*it)->getId()<<endl;
+        ++it;
+        ++i;
     }
 
     char temp;
@@ -1184,6 +1225,7 @@ void CampusVirtual::mostrarListas(char t) {
     //Asignaturas
     list<Subjects*>::const_iterator it;
     it = listaAsignaturas.begin();
+    int i = 0;
     //Alumnos
     /*ANSI escape codes:
     \033[2j clears the entire screen.
@@ -1191,15 +1233,16 @@ void CampusVirtual::mostrarListas(char t) {
     cout<<"\033[2J\033[1;1H";
 
     while(it != listaAsignaturas.end()) {
-      cout<<1<<". "<<"Asignatura: "<<(*it)->getName()
+      cout<<i<<". "<<"Asignatura: "<<(*it)->getName()
         <<" "<<"ID: "<<(*it)->getId()
         <<" "<<"Titulacion: "<<(*it)->getTitulacion()
         <<" "<<"Creditos: "<<(*it)->getCredits()
         <<" "<<"Profesor 1: "<<(*it)->getTeacher1().getName()
-        <<" "<<"Profesor 2: "<<(*it)->getTeacher1().getId()
-        <<" "<<"Profesor 1: "<<(*it)->getTeacher2().getName()
+        <<" "<<"Profesor 1: "<<(*it)->getTeacher1().getId()
+        <<" "<<"Profesor 2: "<<(*it)->getTeacher2().getName()
         <<" "<<"Profesor 2: "<<(*it)->getTeacher2().getId()<<endl;
-        it++;
+        ++it;
+        ++i;
     }
 
     char temp;
@@ -1212,6 +1255,7 @@ void CampusVirtual::mostrarListas(char t) {
     //Seminarios
     list<Conference*>::const_iterator it;
     it = listaSeminarios.begin();
+    int i = 0;
     //Alumnos
     /*ANSI escape codes:
     \033[2j clears the entire screen.
@@ -1219,13 +1263,17 @@ void CampusVirtual::mostrarListas(char t) {
     cout<<"\033[2J\033[1;1H";
 
     while(it != listaSeminarios.end()) {
-      cout<<1<<". "<<"Seminario: "<<(*it)->getName()
+      cout<<i<<". "<<"Seminario: "<<(*it)->getName()
         <<" "<<"ID: "<<(*it)->getId()
         <<" "<<"Supervisor: "<<(*it)->getSupervisor().getName()
-        <<" "<<"Supervisor: "<<(*it)->getSupervisor().getId()
+        <<" "<<(*it)->getSupervisor().getId()
         <<" "<<"Ponente: "<<(*it)->getSpeaker()
-        <<" "<<"Profesor 1: "<<(*it)->getCapacity()<<endl;
-        it++;
+        <<" "<<"Capacidad: "<<(*it)->getCapacity()
+        <<" "<<"Fecha: "<<(*it)->getDate()->returnDay()
+        <<"-"<<(*it)->getDate()->returnMonth()
+        <<"-"<<(*it)->getDate()->returnYear()<<endl;
+        ++it;
+        ++i;
     }
 
     char temp;
@@ -1238,6 +1286,7 @@ void CampusVirtual::mostrarListas(char t) {
     //TFE
     list<TrabajoFinEstudios*>::const_iterator it;
     it = listaTFE.begin();
+    int i = 0;
     //Alumnos
     /*ANSI escape codes:
     \033[2j clears the entire screen.
@@ -1252,7 +1301,8 @@ void CampusVirtual::mostrarListas(char t) {
         <<" "<<"Tutor: "<<(*it)->getTutor().getId()
         <<" "<<"Co-Tutor: "<<(*it)->getCoTutor().getName()
         <<" "<<"Co-Tutor: "<<(*it)->getCoTutor().getId()<<endl;
-        it++;
+        ++it;
+        ++i;
     }
 
     char temp;
@@ -1315,11 +1365,11 @@ void CampusVirtual::escribirLista() {
     fs<<(*it4)->getName()<<"\n"<<flush;
     fs<<(*it4)->getId()<<"\n"<<flush;
     fs<<(*it4)->getTitulacion()<<"\n"<<flush;
-    fs<<(*it4)->getCredits()<<"\n"<<flush;
     fs<<(*it4)->getTeacher1().getName()<<"\n"<<flush;
     fs<<(*it4)->getTeacher1().getId()<<"\n"<<flush;
     fs<<(*it4)->getTeacher2().getName()<<"\n"<<flush;
     fs<<(*it4)->getTeacher2().getId()<<"\n"<<flush;
+    fs<<(*it4)->getCredits()<<"\n"<<flush;
     ++it4;
   }
 
@@ -1337,6 +1387,9 @@ void CampusVirtual::escribirLista() {
     fs<<(*it5)->getSupervisor().getId()<<"\n"<<flush;
     fs<<(*it5)->getSpeaker()<<"\n"<<flush;
     fs<<(*it5)->getCapacity()<<"\n"<<flush;
+    fs<<(*it5)->getDate()->returnDay()<<" "<<flush;
+    fs<<(*it5)->getDate()->returnMonth()<<" "<<flush;
+    fs<<(*it5)->getDate()->returnYear()<<"\n"<<flush;
     ++it5;
   }
 
@@ -1363,5 +1416,11 @@ void CampusVirtual::escribirLista() {
 
 void CampusVirtual::cerrarSesion() {
   escribirLista();
+  listaAlumnos.clear();
+  listaProfesores.clear();
+  listaAdmins.clear();
+  listaAsignaturas.clear();
+  listaSeminarios.clear();
+  listaTFE.clear();
   inicio();
 }
