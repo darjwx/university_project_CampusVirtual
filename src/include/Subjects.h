@@ -3,8 +3,10 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <list>
 #include "Resources.h"
 #include "Teacher.h"
+#include "Alumno.h"
 
 using namespace std;
 
@@ -16,6 +18,8 @@ private:
   unsigned int credits;
   //0-10
   unsigned int grade;
+  list<Alumno*> alumnoApuntados;
+
 public:
   Subjects();
   virtual void setStatus(char);
@@ -33,6 +37,9 @@ public:
   void setTeacher(Teacher, Teacher);
   Teacher& getTeacher1();
   Teacher& getTeacher2();
+  list<Alumno*>::iterator getItBegin();
+  list<Alumno*>::iterator getItEnd();
+  void setAlumnosApuntados(Alumno*);
 
 };
 #endif //_Subjects_H_

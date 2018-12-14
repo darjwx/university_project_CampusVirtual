@@ -15,7 +15,7 @@ private:
   string speaker;
   Date* date;
   int capacity;
-  Alumno* alumnos[];
+  list<Alumno*> alumnoApuntados;
 public:
   Conference();
   virtual void setStatus(char);
@@ -32,6 +32,9 @@ public:
   Date* getDate();
   void setCapacity(int);
   int getCapacity();
+  list<Alumno*>::iterator getItBegin();
+  list<Alumno*>::iterator getItEnd();
+  void setAlumnosApuntados(Alumno*);
 
 };
 #endif //_Conference_H_

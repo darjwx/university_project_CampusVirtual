@@ -4,11 +4,13 @@
 #include <fstream>
 #include "Resources.h"
 #include "Teacher.h"
+#include "Alumno.h"
 
 using namespace std;
 
 class TrabajoFinEstudios : public Resources {
 private:
+  list<Alumno*> alumnoApuntados;
   string titulacion;
   Teacher tutor;
   Teacher coTutor;
@@ -26,5 +28,8 @@ public:
   Teacher& getTutor();
   void setCoTutor(Teacher);
   Teacher& getCoTutor();
+  list<Alumno*>::iterator getItBegin();
+  list<Alumno*>::iterator getItEnd();
+  void setAlumnosApuntados(Alumno*);
 };
 #endif //_TrabajoFinEstudios_H_

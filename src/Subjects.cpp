@@ -67,3 +67,19 @@ Teacher& Subjects::getTeacher1() {
 Teacher& Subjects::getTeacher2() {
   return teacher2;
 }
+
+void Subjects::setAlumnosApuntados(Alumno* a) {
+  //Alumno* a = new Alumno(name,id);
+
+  alumnoApuntados.push_back(a);
+}
+
+list<Alumno*>::iterator Subjects::getItBegin() {
+  list<Alumno*>::iterator it = alumnoApuntados.begin();
+  return it;
+}
+
+list<Alumno*>::iterator Subjects::getItEnd() {
+  list<Alumno*>::iterator it = alumnoApuntados.end();
+  return it;
+}

@@ -1,4 +1,8 @@
 //TODO fix endless loops in menus when entering chars
+//TODO poner a null la posicion de los alumno eliminados.
+//No imprimir ese alumno si esta a null.
+//Eliminar las posiciones con null al finalizar en la lista de alumnos principal
+//y en la lista de alumnos de las asginaturas.
 
 #include <iostream>
 #include <fstream>
@@ -67,6 +71,8 @@ int CampusVirtual::login() {
         if(nombre == (*it)->getName()) {
           if(id == (*it)->getId()) {
             error = false;
+            currentUserId = id;
+            currentUserName = nombre;
           }
           ++it;
         }
@@ -79,6 +85,8 @@ int CampusVirtual::login() {
         if(nombre == (*it)->getName()) {
           if(id == (*it)->getId()) {
             error = false;
+            currentUserId = id;
+            currentUserName = nombre;
           }
           ++it;
         }
@@ -91,6 +99,8 @@ int CampusVirtual::login() {
         if(nombre == (*it)->getName()) {
           if(id == (*it)->getId()) {
             error = false;
+            currentUserId = id;
+            currentUserName = nombre;
           }
           ++it;
         }
@@ -120,13 +130,13 @@ void CampusVirtual::menuAlumno() {
 
   switch (option) {
     case '1':
-      //altaRecurso();
+      altaRecurso();
     break;
     case '2':
       //bajaRecurso();
     break;
     case '3':
-      //mostrarRecursos();
+      mostrarRecursosAlta();
     break;
     case '<':
       cerrarSesion();
@@ -137,7 +147,6 @@ void CampusVirtual::menuAlumno() {
 }
 
 void CampusVirtual::menuAdmin() {
-  Administrator admin;
   char option = '0';
   /*ANSI escape codes:
   \033[2j clears the entire screen.
@@ -977,13 +986,194 @@ void CampusVirtual::gestionarRecursos() {
   menuAdmin();
 }
 
+void CampusVirtual::altaRecurso() {
+  char salir;
+  do {
+    char t = target(2);
+    list<Alumno*>::const_iterator ita;
+    list<Subjects*>::iterator it;
+    list<Conference*>::iterator it2;
+    list<TrabajoFinEstudios*>::iterator it3;
+    int opcion = 0;
+    bool exit = false;
+
+    switch(t) {
+      case '4':
+        mostrarListas('4');
+        cout<<"¿En que asignatura quieres darte de alta?"<<endl;
+        cin>>opcion;
+
+        it = listaAsignaturas.begin();
+        ita = listaAlumnos.begin();
+
+        for(int i = 0; i < opcion; ++i) {
+          ++it;
+        }
+         while(!exit) {
+          if(currentUserName == (*ita)->getName()) {
+            if(currentUserId == (*ita)->getId()) {
+              exit = true;
+            }
+          }
+          //Evita que se incremente si se ha encontrado los datos en la lista
+          if(!exit) {
+            ++ita;
+          }
+        }
+        (*it)->setAlumnosApuntados((*ita));
+        (*ita)->setSubjects(*it);
+
+      break;
+      case '5':
+        mostrarListas('5');
+        cout<<"¿En que seminario quieres darte de alta?"<<endl;
+        cin>>opcion;
+
+        it2 = listaSeminarios.begin();
+        ita = listaAlumnos.begin();
+
+        for(int i = 0; i < opcion; ++i) {
+          ++it2;
+        }
+        while(!exit) {
+         if(currentUserName == (*ita)->getName()) {
+           if(currentUserId == (*ita)->getId()) {
+             exit = true;
+           }
+         }
+         //Evita que se incremente si se ha encontrado los datos en la lista
+         if(!exit) {
+           ++ita;
+         }
+       }
+        (*it2)->setAlumnosApuntados((*ita));
+        (*ita)->setConferences(*it2);
+      break;
+      case '6':
+        mostrarListas('6');
+        cout<<"¿En que tfe quieres darte de alta?"<<endl;
+        cin>>opcion;
+
+        it3 = listaTFE.begin();
+        ita = listaAlumnos.begin();
+
+        for(int i = 0; i < opcion; ++i) {
+          ++it3;
+        }
+        while(!exit) {
+         if(currentUserName == (*ita)->getName()) {
+           if(currentUserId == (*ita)->getId()) {
+             exit = true;
+           }
+         }
+         //Evita que se incremente si se ha encontrado los datos en la lista
+         if(!exit) {
+           ++ita;
+         }
+       }
+        (*it3)->setAlumnosApuntados((*ita));
+        (*ita)->setTFE(*it3);
+      break;
+      default:
+        ;
+    }
+    cout<<"¿Darse de alta en mas recursos?(s/n)"<<endl;
+    cin>>salir;
+  } while(salir == 's');
+  menuAlumno();
+}
+
+void CampusVirtual::bajaRecurso() {
+
+}
+
+void CampusVirtual::mostrarRecursosAlta() {
+  list<Alumno*>::iterator ita = listaAlumnos.begin();
+  list<Subjects*>::iterator asignaturas;
+  list<Conference*>::iterator seminarios;
+  list<TrabajoFinEstudios*>::iterator tfe;
+  bool exit = false;
+  int i = 0;
+
+  while(!exit) {
+   if(currentUserName == (*ita)->getName()) {
+     if(currentUserId == (*ita)->getId()) {
+       exit = true;
+     }
+   }
+   //Evita que se incremente si se ha encontrado los datos en la lista
+   if(!exit) {
+     ++ita;
+   }
+ }
+
+   /*ANSI escape codes:
+   \033[2j clears the entire screen.
+   \033[1;1H position the cursor at row 1, column 1.*/
+   cout<<"\033[2J\033[1;1H";
+
+   asignaturas = (*ita)->getItBegin();
+   cout<<"ASIGNATURAS: "<<endl;
+   while(asignaturas != (*ita)->getItEnd()) {
+     cout<<i<<". "<<"Asignatura: "<<(*asignaturas)->getName()
+       <<" "<<"ID: "<<(*asignaturas)->getId()
+       <<" "<<"Titulacion: "<<(*asignaturas)->getTitulacion()
+       <<" "<<"Creditos: "<<(*asignaturas)->getCredits()
+       <<" "<<"Profesor 1: "<<(*asignaturas)->getTeacher1().getName()
+       <<" "<<"Profesor 1: "<<(*asignaturas)->getTeacher1().getId()
+       <<" "<<"Profesor 2: "<<(*asignaturas)->getTeacher2().getName()
+       <<" "<<"Profesor 2: "<<(*asignaturas)->getTeacher2().getId()<<endl;
+       ++asignaturas;
+       ++i;
+   }
+
+   seminarios = (*ita)->getItBeginConference();
+   cout<<"SEMINARIOS: "<<endl;
+   while(seminarios != (*ita)->getItEndConference()) {
+     cout<<i<<". "<<"Seminario: "<<(*seminarios)->getName()
+       <<" "<<"ID: "<<(*seminarios)->getId()
+       <<" "<<"Supervisor: "<<(*seminarios)->getSupervisor().getName()
+       <<" "<<(*seminarios)->getSupervisor().getId()
+       <<" "<<"Ponente: "<<(*seminarios)->getSpeaker()
+       <<" "<<"Capacidad: "<<(*seminarios)->getCapacity()
+       <<" "<<"Fecha: "<<(*seminarios)->getDate()->returnDay()
+       <<"-"<<(*seminarios)->getDate()->returnMonth()
+       <<"-"<<(*seminarios)->getDate()->returnYear()<<endl;
+       ++seminarios;
+       ++i;
+   }
+
+   tfe = (*ita)->getItBeginTFE();
+   cout<<"TRABAJOS FIN ESTUDIOS: "<<endl;
+   while(tfe != (*ita)->getItEndTFE()) {
+     cout<<i<<". "<<"TFE: "<<(*tfe)->getName()
+       <<" "<<"ID: "<<(*tfe)->getId()
+       <<" "<<"Titulacion: "<<(*tfe)->getTitulacion()
+       <<" "<<"Tutor: "<<(*tfe)->getTutor().getName()
+       <<" "<<"Tutor: "<<(*tfe)->getTutor().getId()
+       <<" "<<"Co-Tutor: "<<(*tfe)->getCoTutor().getName()
+       <<" "<<"Co-Tutor: "<<(*tfe)->getCoTutor().getId()<<endl;
+       ++tfe;
+       ++i;
+   }
+
+   char temp;
+   do {
+     cout<<"Presiona ESC para continuar";
+     cin>>temp;
+   //27 is ESC key in ASCII
+   } while(temp != 27);
+   menuAlumno();
+
+}
+
 void CampusVirtual::cargarListas() {
   fstream fs("alumnos.dat", ios::in | ios::binary);
   string l = " ";
-  Alumno* a = new Alumno();
 
   fs.seekg(0);
   while(getline(fs,l)) {
+    Alumno* a = new Alumno();
     if(l == "Alumno") {
       getline(fs,l);
       //cout<<l<<endl;
@@ -1000,10 +1190,10 @@ void CampusVirtual::cargarListas() {
 
   fs.open("profesores.dat", ios::in | ios::binary);
   l = " ";
-  Teacher* p = new Teacher();
 
   fs.seekg(0);
   while(getline(fs,l)) {
+    Teacher* p = new Teacher();
     if(l == "Profesor") {
       getline(fs,l);
       //cout<<l<<endl;
@@ -1020,10 +1210,10 @@ void CampusVirtual::cargarListas() {
 
   fs.open("admins.dat", ios::in | ios::binary);
   l = " ";
-  Administrator* ad = new Administrator();
 
   fs.seekg(0);
   while(getline(fs,l)) {
+    Administrator* ad = new Administrator();
     if(l == "Admin") {
       getline(fs,l);
       //cout<<l<<endl;
@@ -1040,10 +1230,10 @@ void CampusVirtual::cargarListas() {
 
   fs.open("asignaturas.dat", ios::in | ios::binary);
   l = " ";
-  Subjects* s = new Subjects();
 
   fs.seekg(0);
   while(getline(fs,l)) {
+    Subjects* s = new Subjects();
     if(l == "Asignatura") {
       getline(fs,l);
       //cout<<l<<endl;
@@ -1068,6 +1258,33 @@ void CampusVirtual::cargarListas() {
       int cr = stoi(l,nullptr);
       s->setCredits(cr);
 
+      getline(fs,l);
+      string name;
+      string id;
+      if (l == "Lista") {
+        getline(fs,l);
+        name = l;
+        getline(fs,l);
+        id = l;
+        Alumno* a = new Alumno(name,id);
+        s->setAlumnosApuntados(a);
+
+        bool exit = false;
+        list<Alumno*>::iterator aux = listaAlumnos.begin();
+        while(!exit) {
+         if(name == (*aux)->getName()) {
+           if(id == (*aux)->getId()) {
+             (*aux)->setSubjects(s);
+             exit = true;
+           }
+         }
+         //Evita que se incremente si se ha encontrado los datos en la lista
+         if(!exit) {
+           ++aux;
+         }
+       }
+      }
+
       listaAsignaturas.push_back(s);
     }
   }
@@ -1076,10 +1293,10 @@ void CampusVirtual::cargarListas() {
 
   fs.open("seminarios.dat", ios::in | ios::binary);
   l = " ";
-  Conference* c = new Conference();
 
   fs.seekg(0);
   while(getline(fs,l)) {
+    Conference* c = new Conference();
     if(l == "Seminario") {
       getline(fs,l);
       //cout<<l<<endl;
@@ -1100,14 +1317,42 @@ void CampusVirtual::cargarListas() {
       int ca = stoi(l,nullptr);
       c->setCapacity(ca);
       Date* date;
-      getline(fs,l,' ');
+      getline(fs,l);
       int dia = stoi(l,nullptr);
-      getline(fs,l,' ');
+      getline(fs,l);
       int mes = stoi(l,nullptr);
-      getline(fs,l,' ');
+      getline(fs,l);
       int anio = stoi(l,nullptr);
       date = new Date(dia,mes,anio);
       c->setDate(date);
+
+      getline(fs,l);
+      string name;
+      string id;
+      if (l == "Lista") {
+        getline(fs,l);
+        name = l;
+        getline(fs,l);
+        id = l;
+        Alumno* a = new Alumno(name,id);
+        c->setAlumnosApuntados(a);
+
+        bool exit = false;
+        list<Alumno*>::iterator aux = listaAlumnos.begin();
+        while(!exit) {
+         if(name == (*aux)->getName()) {
+           if(id == (*aux)->getId()) {
+             (*aux)->setConferences(c);
+             exit = true;
+           }
+         }
+         //Evita que se incremente si se ha encontrado los datos en la lista
+         if(!exit) {
+           ++aux;
+         }
+       }
+
+      }
 
       listaSeminarios.push_back(c);
     }
@@ -1117,10 +1362,10 @@ void CampusVirtual::cargarListas() {
 
   fs.open("tfe.dat", ios::in | ios::binary);
   l = " ";
-  TrabajoFinEstudios* tfe = new TrabajoFinEstudios();
 
   fs.seekg(0);
   while(getline(fs,l)) {
+    TrabajoFinEstudios* tfe = new TrabajoFinEstudios();
     if(l == "TFE") {
       getline(fs,l);
       //cout<<l<<endl;
@@ -1142,7 +1387,34 @@ void CampusVirtual::cargarListas() {
       coTutor.setId(l);
       tfe->setTutor(tutor);
       tfe->setCoTutor(coTutor);
+
       getline(fs,l);
+      string name;
+      string id;
+      if (l == "Lista") {
+        getline(fs,l);
+        name = l;
+        getline(fs,l);
+        id = l;
+        Alumno* a = new Alumno(name,id);
+        tfe->setAlumnosApuntados(a);
+
+        bool exit = false;
+        list<Alumno*>::iterator aux = listaAlumnos.begin();
+        while(!exit) {
+         if(name == (*aux)->getName()) {
+           if(id== (*aux)->getId()) {
+             (*aux)->setTFE(tfe);
+             exit = true;
+           }
+         }
+         //Evita que se incremente si se ha encontrado los datos en la lista
+         if(!exit) {
+           ++aux;
+         }
+       }
+
+      }
 
       listaTFE.push_back(tfe);
     }
@@ -1294,7 +1566,7 @@ void CampusVirtual::mostrarListas(char t) {
     cout<<"\033[2J\033[1;1H";
 
     while(it != listaTFE.end()) {
-      cout<<1<<". "<<"TFE: "<<(*it)->getName()
+      cout<<i<<". "<<"TFE: "<<(*it)->getName()
         <<" "<<"ID: "<<(*it)->getId()
         <<" "<<"Titulacion: "<<(*it)->getTitulacion()
         <<" "<<"Tutor: "<<(*it)->getTutor().getName()
@@ -1359,6 +1631,7 @@ void CampusVirtual::escribirLista() {
   fs.open("asignaturas.dat", ios::out | ios::trunc | ios::binary);
   fs.seekp(0);
   list<Subjects*>::const_iterator it4;
+  list<Alumno*>::const_iterator itAlumnos;
   it4 = listaAsignaturas.begin();
   while(it4 != listaAsignaturas.end()) {
     fs<<"Asignatura"<<"\n"<<flush;
@@ -1370,6 +1643,14 @@ void CampusVirtual::escribirLista() {
     fs<<(*it4)->getTeacher2().getName()<<"\n"<<flush;
     fs<<(*it4)->getTeacher2().getId()<<"\n"<<flush;
     fs<<(*it4)->getCredits()<<"\n"<<flush;
+
+
+    itAlumnos = (*it4)->getItBegin();
+    for(; itAlumnos != (*it4)->getItEnd(); ++itAlumnos) {
+      fs<<"Lista"<<"\n"<<flush;
+      fs<<(*itAlumnos)->getName()<<"\n"<<flush;
+      fs<<(*itAlumnos)->getId()<<"\n"<<flush;
+    }
     ++it4;
   }
 
@@ -1387,9 +1668,17 @@ void CampusVirtual::escribirLista() {
     fs<<(*it5)->getSupervisor().getId()<<"\n"<<flush;
     fs<<(*it5)->getSpeaker()<<"\n"<<flush;
     fs<<(*it5)->getCapacity()<<"\n"<<flush;
-    fs<<(*it5)->getDate()->returnDay()<<" "<<flush;
-    fs<<(*it5)->getDate()->returnMonth()<<" "<<flush;
+    fs<<(*it5)->getDate()->returnDay()<<"\n"<<flush;
+    fs<<(*it5)->getDate()->returnMonth()<<"\n"<<flush;
     fs<<(*it5)->getDate()->returnYear()<<"\n"<<flush;
+
+    itAlumnos = (*it5)->getItBegin();
+    for(; itAlumnos != (*it5)->getItEnd(); ++itAlumnos) {
+      fs<<"Lista"<<"\n"<<flush;
+      fs<<(*itAlumnos)->getName()<<"\n"<<flush;
+      fs<<(*itAlumnos)->getId()<<"\n"<<flush;
+    }
+
     ++it5;
   }
 
@@ -1408,6 +1697,14 @@ void CampusVirtual::escribirLista() {
     fs<<(*it6)->getTutor().getId()<<"\n"<<flush;
     fs<<(*it6)->getCoTutor().getName()<<"\n"<<flush;
     fs<<(*it6)->getCoTutor().getId()<<"\n"<<flush;
+
+    itAlumnos = (*it6)->getItBegin();
+    for(; itAlumnos != (*it6)->getItEnd(); ++itAlumnos) {
+      fs<<"Lista"<<"\n"<<flush;
+      fs<<(*itAlumnos)->getName()<<"\n"<<flush;
+      fs<<(*itAlumnos)->getId()<<"\n"<<flush;
+    }
+
     ++it6;
   }
 

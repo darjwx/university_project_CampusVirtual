@@ -54,3 +54,17 @@ void TrabajoFinEstudios::setCoTutor(Teacher coTutor) {
 Teacher& TrabajoFinEstudios::getCoTutor() {
   return coTutor;
 }
+
+void TrabajoFinEstudios::setAlumnosApuntados(Alumno* a) {
+  alumnoApuntados.push_back(a);
+}
+
+list<Alumno*>::iterator TrabajoFinEstudios::getItBegin() {
+  list<Alumno*>::iterator it = alumnoApuntados.begin();
+  return it;
+}
+
+list<Alumno*>::iterator TrabajoFinEstudios::getItEnd() {
+  list<Alumno*>::iterator it = alumnoApuntados.end();
+  return it;
+}

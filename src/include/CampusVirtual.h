@@ -10,6 +10,9 @@
 
 class CampusVirtual {
 private:
+  string currentUserName;
+  string currentUserId;
+
   list<Alumno*> listaAlumnos;
   list<Teacher*> listaProfesores;
   list<Administrator*> listaAdmins;
@@ -35,6 +38,9 @@ public:
   char target(int);
   void gestionarUsuarios();
   void gestionarRecursos();
+  void altaRecurso();
+  void bajaRecurso();
+  void mostrarRecursosAlta();
 
   void cargarListas();
   void mostrarListas(char);

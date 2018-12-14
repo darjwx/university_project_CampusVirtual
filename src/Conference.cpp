@@ -62,3 +62,17 @@ void Conference::setCapacity(int capacity) {
 int Conference::getCapacity() {
   return capacity;
 }
+
+list<Alumno*>::iterator Conference::getItBegin() {
+  list<Alumno*>::iterator it = alumnoApuntados.begin();
+  return it;
+}
+
+list<Alumno*>::iterator Conference::getItEnd() {
+  list<Alumno*>::iterator it = alumnoApuntados.end();
+  return it;
+}
+
+void Conference::setAlumnosApuntados(Alumno* a) {
+  alumnoApuntados.push_back(a);
+}
