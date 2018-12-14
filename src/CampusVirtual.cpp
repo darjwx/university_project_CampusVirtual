@@ -1137,8 +1137,8 @@ void CampusVirtual::mostrarRecursosAlta() {
        <<" "<<"Ponente: "<<(*seminarios)->getSpeaker()
        <<" "<<"Capacidad: "<<(*seminarios)->getCapacity()
        <<" "<<"Fecha: "<<(*seminarios)->getDate()->returnDay()
-       <<"-"<<(*seminarios)->getDate()->returnMonth()
-       <<"-"<<(*seminarios)->getDate()->returnYear()<<endl;
+       <<"/"<<(*seminarios)->getDate()->returnMonth()
+       <<"/"<<(*seminarios)->getDate()->returnYear()<<endl;
        ++seminarios;
        ++i;
    }
@@ -1317,9 +1317,9 @@ void CampusVirtual::cargarListas() {
       int ca = stoi(l,nullptr);
       c->setCapacity(ca);
       Date* date;
-      getline(fs,l);
+      getline(fs,l,'/');
       int dia = stoi(l,nullptr);
-      getline(fs,l);
+      getline(fs,l,'/');
       int mes = stoi(l,nullptr);
       getline(fs,l);
       int anio = stoi(l,nullptr);
@@ -1542,8 +1542,8 @@ void CampusVirtual::mostrarListas(char t) {
         <<" "<<"Ponente: "<<(*it)->getSpeaker()
         <<" "<<"Capacidad: "<<(*it)->getCapacity()
         <<" "<<"Fecha: "<<(*it)->getDate()->returnDay()
-        <<"-"<<(*it)->getDate()->returnMonth()
-        <<"-"<<(*it)->getDate()->returnYear()<<endl;
+        <<"/"<<(*it)->getDate()->returnMonth()
+        <<"/"<<(*it)->getDate()->returnYear()<<endl;
         ++it;
         ++i;
     }
@@ -1668,8 +1668,8 @@ void CampusVirtual::escribirLista() {
     fs<<(*it5)->getSupervisor().getId()<<"\n"<<flush;
     fs<<(*it5)->getSpeaker()<<"\n"<<flush;
     fs<<(*it5)->getCapacity()<<"\n"<<flush;
-    fs<<(*it5)->getDate()->returnDay()<<"\n"<<flush;
-    fs<<(*it5)->getDate()->returnMonth()<<"\n"<<flush;
+    fs<<(*it5)->getDate()->returnDay()<<'/'<<flush;
+    fs<<(*it5)->getDate()->returnMonth()<<'/'<<flush;
     fs<<(*it5)->getDate()->returnYear()<<"\n"<<flush;
 
     itAlumnos = (*it5)->getItBegin();
