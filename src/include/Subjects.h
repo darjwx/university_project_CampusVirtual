@@ -13,8 +13,8 @@ using namespace std;
 class Subjects : public Resources {
 private:
   string titulacion;
-  Teacher teacher1;
-  Teacher teacher2;
+  Teacher* teacher1;
+  Teacher* teacher2;
   unsigned int credits;
   //0-10
   unsigned int grade;
@@ -34,12 +34,16 @@ public:
   unsigned int getCredits();
   void setGrade(unsigned int);
   unsigned int getGrade();
-  void setTeacher(Teacher, Teacher);
-  Teacher& getTeacher1();
-  Teacher& getTeacher2();
+  void setTeacher(Teacher*, Teacher*);
+  void setTeacher1(Teacher*);
+  void setTeacher2(Teacher*);
+  Teacher* getTeacher1();
+  Teacher* getTeacher2();
   list<Alumno*>::iterator getItBegin();
   list<Alumno*>::iterator getItEnd();
   void setAlumnosApuntados(Alumno*);
+  void NullT1();
+  void NullT2();
 
 };
 #endif //_Subjects_H_

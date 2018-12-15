@@ -55,22 +55,27 @@ unsigned int Subjects::getGrade() {
   return grade;
 }
 
-void Subjects::setTeacher(Teacher t1, Teacher t2) {
+void Subjects::setTeacher(Teacher* t1, Teacher* t2) {
   teacher1 = t1;
   teacher2 = t2;
 }
 
-Teacher& Subjects::getTeacher1() {
+void Subjects::setTeacher1(Teacher* t1) {
+  teacher1 = t1;
+}
+void Subjects::setTeacher2(Teacher* t2) {
+  teacher2 = t2;
+}
+
+Teacher* Subjects::getTeacher1() {
   return teacher1;
 }
 
-Teacher& Subjects::getTeacher2() {
+Teacher* Subjects::getTeacher2() {
   return teacher2;
 }
 
 void Subjects::setAlumnosApuntados(Alumno* a) {
-  //Alumno* a = new Alumno(name,id);
-
   alumnoApuntados.push_back(a);
 }
 
@@ -82,4 +87,11 @@ list<Alumno*>::iterator Subjects::getItBegin() {
 list<Alumno*>::iterator Subjects::getItEnd() {
   list<Alumno*>::iterator it = alumnoApuntados.end();
   return it;
+}
+
+void Subjects::NullT1(){
+  teacher1=NULL;
+}
+void Subjects::NullT2(){
+  teacher2=NULL;
 }

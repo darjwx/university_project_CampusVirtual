@@ -10,10 +10,10 @@ using namespace std;
 
 class TrabajoFinEstudios : public Resources {
 private:
-  list<Alumno*> alumnoApuntados;
+  Alumno* alumno;
   string titulacion;
-  Teacher tutor;
-  Teacher coTutor;
+  Teacher* tutor;
+  Teacher* coTutor;
 public:
   TrabajoFinEstudios();
   virtual void setStatus(char);
@@ -24,12 +24,14 @@ public:
   virtual string getName();
   void setTitulacion(string);
   string getTitulacion();
-  void setTutor(Teacher);
-  Teacher& getTutor();
-  void setCoTutor(Teacher);
-  Teacher& getCoTutor();
-  list<Alumno*>::iterator getItBegin();
-  list<Alumno*>::iterator getItEnd();
-  void setAlumnosApuntados(Alumno*);
+  void setTutor(Teacher*);
+  Teacher* getTutor();
+  void setCoTutor(Teacher*);
+  Teacher* getCoTutor();
+  void setAlumnoApuntado(Alumno*);
+  Alumno* getAlumno();
+  void NullT();
+  void NullCT();
+  void NullAlumno();
 };
 #endif //_TrabajoFinEstudios_H_

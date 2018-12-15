@@ -31,11 +31,11 @@ string Conference::getName() {
   return name;
 }
 
-void Conference::setSupervisor(Teacher supervisor) {
+void Conference::setSupervisor(Teacher* supervisor) {
   this->supervisor = supervisor;
 }
 
-Teacher& Conference::getSupervisor() {
+Teacher* Conference::getSupervisor() {
   return supervisor;
 }
 
@@ -75,4 +75,12 @@ list<Alumno*>::iterator Conference::getItEnd() {
 
 void Conference::setAlumnosApuntados(Alumno* a) {
   alumnoApuntados.push_back(a);
+}
+
+void Conference::eliminarAlumno(list<Alumno*>::iterator it) {
+  it = alumnoApuntados.erase(it);
+}
+
+void Conference::NullS(){
+  supervisor=NULL;
 }

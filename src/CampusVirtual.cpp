@@ -447,6 +447,7 @@ void CampusVirtual::gestionarUsuarios() {
             for(int i = 0; i < pos; ++i) {
               ++it;
             }
+
             it = listaAlumnos.erase(it);
 
             cout<<"¿Eliminar mas alumnos? (y/n)"<<endl;
@@ -460,7 +461,6 @@ void CampusVirtual::gestionarUsuarios() {
             \033[2j clears the entire screen.
             \033[1;1H position the cursor at row 1, column 1.*/
             cout<<"\033[2J\033[1;1H";
-            cout<<"\033[2J\033[1;1H";
             mostrarListas(t);
             cout<<"Profesor a eliminar: "<<endl;
             cin>>pos;
@@ -470,6 +470,47 @@ void CampusVirtual::gestionarUsuarios() {
 
             for(int i = 0; i < pos; ++i) {
               ++it;
+            }
+
+            list<Subjects*>::iterator it_as;
+            list<Conference*>::iterator it_sem;
+            list<TrabajoFinEstudios*>::iterator it_tfe;
+            it_as = listaAsignaturas.begin();
+            it_sem = listaSeminarios.begin();
+            it_tfe = listaTFE.begin();
+            for(unsigned int i=0;i<numAsig;i++){
+              if((*it_as)->getTeacher1() != NULL) {
+                if((*it_as)->getTeacher1()->getId()==(*it)->getId()){
+                  (*it_as)->NullT1();
+                }
+              }
+              if((*it_as)->getTeacher2() != NULL) {
+                if((*it_as)->getTeacher2()->getId()==(*it)->getId()){
+                  (*it_as)->NullT2();
+                }
+              }
+              ++it_as;
+            }
+            for(unsigned int i=0;i<numSem;i++){
+              if((*it_sem)->getSupervisor() != NULL) {
+                if((*it_sem)->getSupervisor()->getId()==(*it)->getId()){
+                  (*it_sem)->NullS();
+                }
+              }
+              ++it_sem;
+            }
+            for(unsigned int i=0;i<numTFE;i++){
+              if((*it_tfe)->getTutor() != NULL) {
+                if((*it_tfe)->getTutor()->getId()==(*it)->getId()){
+                  (*it_tfe)->NullT();
+                }
+              }
+              if((*it_tfe)->getCoTutor() != NULL) {
+                if((*it_tfe)->getCoTutor()->getId()==(*it)->getId()){
+                  (*it_tfe)->NullCT();
+                }
+              }
+              ++it_tfe;
             }
             it = listaProfesores.erase(it);
 
@@ -483,7 +524,6 @@ void CampusVirtual::gestionarUsuarios() {
             /*ANSI escape codes:
             \033[2j clears the entire screen.
             \033[1;1H position the cursor at row 1, column 1.*/
-            cout<<"\033[2J\033[1;1H";
             cout<<"\033[2J\033[1;1H";
             mostrarListas(t);
             cout<<"Administrador a eliminar: "<<endl;
@@ -542,16 +582,10 @@ void CampusVirtual::gestionarRecursos() {
       string nombre;
       string titulacion;
       string speaker;
-      Teacher teacher1 = Teacher();
-      Teacher teacher2 = Teacher();
-      Teacher supervisor = Teacher();
-      Teacher tutor = Teacher();
-      Teacher coTutor = Teacher();
       Date* date;
       unsigned int credits;
       int capacity;
       //unsigned int grade;
-      string auxN;
       string auxId;
 
       char more;
@@ -559,6 +593,9 @@ void CampusVirtual::gestionarRecursos() {
       switch (t) {
         case '4':
           do {
+            list<Teacher*>::const_iterator it_pr;
+            Teacher* teacher1 = new Teacher();
+            Teacher* teacher2 = new Teacher();
 
             /*ANSI escape codes:
             \033[2j clears the entire screen.
@@ -572,21 +609,52 @@ void CampusVirtual::gestionarRecursos() {
             cout<<endl<<"Titulacion: ";
             cin>>titulacion;
 
+            it_pr = listaProfesores.begin();
+            bool exit = false;
             cout<<endl<<"Profesor 1: ";
-            cout<<endl<<"Nombre: ";
-            cin>>auxN;
-            teacher1.setName(auxN);
             cout<<endl<<"ID: ";
             cin>>auxId;
-            teacher1.setId(auxId);
 
+            while(it_pr != listaProfesores.end()) {
+             if(auxId == (*it_pr)->getId()) {
+               teacher1 = (*it_pr);
+               exit = true;
+             }
+             //Evita que se incremente si se ha encontrado los datos en la lista
+             if(!exit) {
+               ++it_pr;
+             } else {
+               it_pr = listaProfesores.end();
+             }
+            }
+            if(!exit) {
+              cout<<"El profesor no esta dado de alta"<<endl
+                <<"Profesor no asignado"<<endl;
+              teacher1 = NULL;
+            }
+
+            it_pr = listaProfesores.begin();
+            exit = false;
             cout<<endl<<"Profesor 2: ";
-            cout<<endl<<"Nombre: ";
-            cin>>auxN;
-            teacher2.setName(auxN);
             cout<<endl<<"ID: ";
             cin>>auxId;
-            teacher2.setId(auxId);
+            while(it_pr != listaProfesores.end()) {
+             if(auxId == (*it_pr)->getId()) {
+               teacher2 = (*it_pr);
+               exit = true;
+             }
+             //Evita que se incremente si se ha encontrado los datos en la lista
+             if(!exit) {
+               ++it_pr;
+             } else {
+               it_pr = listaProfesores.end();
+             }
+            }
+            if(!exit) {
+              cout<<"El profesor no esta dado de alta"<<endl
+                <<"Profesor no asignado"<<endl;
+              teacher2 = NULL;
+            }
 
             cout<<endl<<"Creditos: ";
             cin>>credits;
@@ -607,6 +675,8 @@ void CampusVirtual::gestionarRecursos() {
         case '5':
           do {
 
+            list<Teacher*>::const_iterator it_pr;
+            Teacher* supervisor = new Teacher();
             /*ANSI escape codes:
             \033[2j clears the entire screen.
             \033[1;1H position the cursor at row 1, column 1.*/
@@ -619,13 +689,28 @@ void CampusVirtual::gestionarRecursos() {
             cout<<endl<<"Ponente: ";
             cin>>speaker;
 
+            it_pr = listaProfesores.begin();
+            bool exit = false;
             cout<<endl<<"Supervisor: ";
-            cout<<endl<<"Nombre: ";
-            cin>>auxN;
-            supervisor.setName(auxN);
             cout<<endl<<"ID: ";
             cin>>auxId;
-            supervisor.setId(auxId);
+            while(it_pr != listaProfesores.end()) {
+             if(auxId == (*it_pr)->getId()) {
+               supervisor = (*it_pr);
+               exit = true;
+             }
+             //Evita que se incremente si se ha encontrado los datos en la lista
+             if(!exit) {
+               ++it_pr;
+             } else {
+               it_pr = listaProfesores.end();
+             }
+            }
+            if(!exit) {
+              cout<<"El profesor no esta dado de alta"<<endl
+                <<"Supervisor no asignado"<<endl;
+              supervisor = NULL;
+            }
 
             cout<<endl<<"Capacidad: ";
             cin>>capacity;
@@ -658,6 +743,9 @@ void CampusVirtual::gestionarRecursos() {
         case '6':
           do {
 
+            list<Teacher*>::const_iterator it_pr;
+            Teacher* tutor = new Teacher();
+            Teacher* coTutor = new Teacher();
             /*ANSI escape codes:
             \033[2j clears the entire screen.
             \033[1;1H position the cursor at row 1, column 1.*/
@@ -670,21 +758,51 @@ void CampusVirtual::gestionarRecursos() {
             cout<<endl<<"Titulacion: ";
             cin>>titulacion;
 
+            it_pr = listaProfesores.begin();
+            bool exit = false;
             cout<<endl<<"Tutor: ";
-            cout<<endl<<"Nombre: ";
-            cin>>auxN;
-            teacher1.setName(auxN);
             cout<<endl<<"ID: ";
             cin>>auxId;
-            tutor.setId(auxId);
+            while(it_pr != listaProfesores.end()) {
+             if(auxId == (*it_pr)->getId()) {
+               tutor = (*it_pr);
+               exit = true;
+             }
+             //Evita que se incremente si se ha encontrado los datos en la lista
+             if(!exit) {
+               ++it_pr;
+             } else {
+               it_pr = listaProfesores.end();
+             }
+            }
+            if(!exit) {
+              cout<<"El profesor no esta dado de alta"<<endl
+                <<"Tutor no asignado"<<endl;
+              tutor = NULL;
+            }
 
+            it_pr = listaProfesores.begin();
+            exit = false;
             cout<<endl<<"coTutor: ";
-            cout<<endl<<"Nombre: ";
-            cin>>auxN;
-            teacher2.setName(auxN);
             cout<<endl<<"ID: ";
             cin>>auxId;
-            coTutor.setId(auxId);
+            while(it_pr != listaProfesores.end()) {
+             if(auxId == (*it_pr)->getId()) {
+               coTutor = (*it_pr);
+               exit = true;
+             }
+             //Evita que se incremente si se ha encontrado los datos en la lista
+             if(!exit) {
+               ++it_pr;
+             } else {
+               it_pr = listaProfesores.end();
+             }
+            }
+            if(!exit) {
+              cout<<"El profesor no esta dado de alta"<<endl
+                <<"CoTutor no asignado"<<endl;
+              coTutor = NULL;
+            }
 
             TrabajoFinEstudios* a = new TrabajoFinEstudios();
             a->setName(nombre);
@@ -711,11 +829,6 @@ void CampusVirtual::gestionarRecursos() {
       string nombre;
       string titulacion;
       string speaker;
-      Teacher teacher1 = Teacher();
-      Teacher teacher2 = Teacher();
-      Teacher supervisor = Teacher();
-      Teacher tutor = Teacher();
-      Teacher coTutor = Teacher();
       unsigned int credits;
       int capacity;
       //unsigned int grade;
@@ -727,6 +840,8 @@ void CampusVirtual::gestionarRecursos() {
       switch (t) {
         case '4':
           do {
+            Teacher* teacher1 = new Teacher();
+            Teacher* teacher2 = new Teacher();
 
             /*ANSI escape codes:
             \033[2j clears the entire screen.
@@ -747,18 +862,18 @@ void CampusVirtual::gestionarRecursos() {
             cout<<endl<<"Profesor 1: ";
             cout<<endl<<"Nombre: ";
             cin>>auxN;
-            teacher1.setName(auxN);
+            teacher1->setName(auxN);
             cout<<endl<<"ID: ";
             cin>>auxId;
-            teacher1.setId(auxId);
+            teacher1->setId(auxId);
 
             cout<<endl<<"Profesor 2: ";
             cout<<endl<<"Nombre: ";
             cin>>auxN;
-            teacher2.setName(auxN);
+            teacher2->setName(auxN);
             cout<<endl<<"ID: ";
             cin>>auxId;
-            teacher2.setId(auxId);
+            teacher2->setId(auxId);
 
             cout<<endl<<"Creditos: ";
             cin>>credits;
@@ -780,6 +895,7 @@ void CampusVirtual::gestionarRecursos() {
         break;
         case '5':
           do {
+            Teacher* supervisor = new Teacher();
 
             /*ANSI escape codes:
             \033[2j clears the entire screen.
@@ -800,10 +916,10 @@ void CampusVirtual::gestionarRecursos() {
             cout<<endl<<"Supervisor: ";
             cout<<endl<<"Nombre: ";
             cin>>auxN;
-            supervisor.setName(auxN);
+            supervisor->setName(auxN);
             cout<<endl<<"ID: ";
             cin>>auxId;
-            supervisor.setId(auxId);
+            supervisor->setId(auxId);
 
             cout<<endl<<"Capacidad: ";
             cin>>capacity;
@@ -837,6 +953,8 @@ void CampusVirtual::gestionarRecursos() {
         break;
         case '6':
           do {
+            Teacher* tutor = new Teacher();
+            Teacher* coTutor = new Teacher();
 
             /*ANSI escape codes:
             \033[2j clears the entire screen.
@@ -858,18 +976,18 @@ void CampusVirtual::gestionarRecursos() {
             cout<<endl<<"Tutor: ";
             cout<<endl<<"Nombre: ";
             cin>>auxN;
-            teacher1.setName(auxN);
+            tutor->setName(auxN);
             cout<<endl<<"ID: ";
             cin>>auxId;
-            tutor.setId(auxId);
+            tutor->setId(auxId);
 
             cout<<endl<<"coTutor: ";
             cout<<endl<<"Nombre: ";
             cin>>auxN;
-            teacher2.setName(auxN);
+            coTutor->setName(auxN);
             cout<<endl<<"ID: ";
             cin>>auxId;
-            coTutor.setId(auxId);
+            coTutor->setId(auxId);
 
             list<TrabajoFinEstudios*>::iterator it;
 
@@ -1071,7 +1189,7 @@ void CampusVirtual::altaRecurso() {
            ++ita;
          }
        }
-        (*it3)->setAlumnosApuntados((*ita));
+        (*it3)->setAlumnoApuntado((*ita));
         (*ita)->setTFE(*it3);
       break;
       default:
@@ -1119,10 +1237,10 @@ void CampusVirtual::mostrarRecursosAlta() {
        <<" "<<"ID: "<<(*asignaturas)->getId()
        <<" "<<"Titulacion: "<<(*asignaturas)->getTitulacion()
        <<" "<<"Creditos: "<<(*asignaturas)->getCredits()
-       <<" "<<"Profesor 1: "<<(*asignaturas)->getTeacher1().getName()
-       <<" "<<"Profesor 1: "<<(*asignaturas)->getTeacher1().getId()
-       <<" "<<"Profesor 2: "<<(*asignaturas)->getTeacher2().getName()
-       <<" "<<"Profesor 2: "<<(*asignaturas)->getTeacher2().getId()<<endl;
+       <<" "<<"Profesor 1: "<<(*asignaturas)->getTeacher1()->getName()
+       <<" "<<"Profesor 1: "<<(*asignaturas)->getTeacher1()->getId()
+       <<" "<<"Profesor 2: "<<(*asignaturas)->getTeacher2()->getName()
+       <<" "<<"Profesor 2: "<<(*asignaturas)->getTeacher2()->getId()<<endl;
        ++asignaturas;
        ++i;
    }
@@ -1132,8 +1250,8 @@ void CampusVirtual::mostrarRecursosAlta() {
    while(seminarios != (*ita)->getItEndConference()) {
      cout<<i<<". "<<"Seminario: "<<(*seminarios)->getName()
        <<" "<<"ID: "<<(*seminarios)->getId()
-       <<" "<<"Supervisor: "<<(*seminarios)->getSupervisor().getName()
-       <<" "<<(*seminarios)->getSupervisor().getId()
+       <<" "<<"Supervisor: "<<(*seminarios)->getSupervisor()->getName()
+       <<" "<<(*seminarios)->getSupervisor()->getId()
        <<" "<<"Ponente: "<<(*seminarios)->getSpeaker()
        <<" "<<"Capacidad: "<<(*seminarios)->getCapacity()
        <<" "<<"Fecha: "<<(*seminarios)->getDate()->returnDay()
@@ -1149,10 +1267,10 @@ void CampusVirtual::mostrarRecursosAlta() {
      cout<<i<<". "<<"TFE: "<<(*tfe)->getName()
        <<" "<<"ID: "<<(*tfe)->getId()
        <<" "<<"Titulacion: "<<(*tfe)->getTitulacion()
-       <<" "<<"Tutor: "<<(*tfe)->getTutor().getName()
-       <<" "<<"Tutor: "<<(*tfe)->getTutor().getId()
-       <<" "<<"Co-Tutor: "<<(*tfe)->getCoTutor().getName()
-       <<" "<<"Co-Tutor: "<<(*tfe)->getCoTutor().getId()<<endl;
+       <<" "<<"Tutor: "<<(*tfe)->getTutor()->getName()
+       <<" "<<"Tutor: "<<(*tfe)->getTutor()->getId()
+       <<" "<<"Co-Tutor: "<<(*tfe)->getCoTutor()->getName()
+       <<" "<<"Co-Tutor: "<<(*tfe)->getCoTutor()->getId()<<endl;
        ++tfe;
        ++i;
    }
@@ -1170,6 +1288,7 @@ void CampusVirtual::mostrarRecursosAlta() {
 void CampusVirtual::cargarListas() {
   fstream fs("alumnos.dat", ios::in | ios::binary);
   string l = " ";
+  list <Teacher*>::iterator it_pr;
 
   fs.seekg(0);
   while(getline(fs,l)) {
@@ -1236,24 +1355,38 @@ void CampusVirtual::cargarListas() {
     Subjects* s = new Subjects();
     if(l == "Asignatura") {
       getline(fs,l);
-      //cout<<l<<endl;
       s->setName(l);
       getline(fs,l);
-      //cout<<l<<endl;
       s->setId(l);
       getline(fs,l);
       s->setTitulacion(l);
       getline(fs,l);
-      Teacher t1 = Teacher();
-      Teacher t2 = Teacher();
-      t1.setName(l);
+      if(l=="NULL"){
+        s->NullT1();
+      }
+      else{
+        it_pr=listaProfesores.begin();
+        for(unsigned int i=0;i<numProf;i++){
+          if((*it_pr)->getId()==l){
+            s->setTeacher1(*it_pr);
+            i=numProf;
+          }
+          it_pr++;
+        }
+      }
       getline(fs,l);
-      t1.setId(l);
-      getline(fs,l);
-      t2.setName(l);
-      getline(fs,l);
-      t2.setId(l);
-      s->setTeacher(t1,t2);
+      if(l=="NULL"){
+        s->NullT2();
+      }
+      else{
+        it_pr=listaProfesores.begin();
+        for(unsigned int i=0;i<numProf;i++){
+          if((*it_pr)->getId()==l){
+            s->setTeacher2(*it_pr);
+            i=numProf;
+          }
+        }
+      }
       getline(fs,l);
       int cr = stoi(l,nullptr);
       s->setCredits(cr);
@@ -1271,7 +1404,7 @@ void CampusVirtual::cargarListas() {
 
         bool exit = false;
         list<Alumno*>::iterator aux = listaAlumnos.begin();
-        while(!exit) {
+        while(aux != listaAlumnos.end()) {
          if(name == (*aux)->getName()) {
            if(id == (*aux)->getId()) {
              (*aux)->setSubjects(s);
@@ -1299,17 +1432,23 @@ void CampusVirtual::cargarListas() {
     Conference* c = new Conference();
     if(l == "Seminario") {
       getline(fs,l);
-      //cout<<l<<endl;
       c->setName(l);
       getline(fs,l);
-      //cout<<l<<endl;
       c->setId(l);
-      Teacher supervisor = Teacher();
       getline(fs,l);
-      supervisor.setName(l);
-      getline(fs,l);
-      supervisor.setId(l);
-      c->setSupervisor(supervisor);
+      if(l=="NULL"){
+        c->NullS();
+      }
+      else{
+        it_pr=listaProfesores.begin();
+        for(unsigned int i=0;i<numProf;i++){
+          if((*it_pr)->getId()==l){
+            c->setSupervisor(*it_pr);
+            i=numProf;
+          }
+          it_pr++;
+        }
+      }
       getline(fs,l);
       c->setSpeaker(l);
       getline(fs,l);
@@ -1368,25 +1507,39 @@ void CampusVirtual::cargarListas() {
     TrabajoFinEstudios* tfe = new TrabajoFinEstudios();
     if(l == "TFE") {
       getline(fs,l);
-      //cout<<l<<endl;
       tfe->setName(l);
       getline(fs,l);
-      //cout<<l<<endl;
       tfe->setId(l);
       getline(fs,l);
       tfe->setTitulacion(l);
       getline(fs,l);
-      Teacher tutor = Teacher();
-      Teacher coTutor = Teacher();
-      tutor.setName(l);
+      if(l=="NULL"){
+        tfe->NullT();
+      }
+      else{
+        it_pr=listaProfesores.begin();
+        for(unsigned int i=0;i<numProf;i++){
+          if((*it_pr)->getId()==l){
+            tfe->setTutor(*it_pr);
+            i=numProf;
+          }
+          it_pr++;
+        }
+      }
       getline(fs,l);
-      tutor.setId(l);
-      getline(fs,l);
-      coTutor.setName(l);
-      getline(fs,l);
-      coTutor.setId(l);
-      tfe->setTutor(tutor);
-      tfe->setCoTutor(coTutor);
+      if(l=="NULL"){
+        tfe->NullCT();
+      }
+      else{
+        it_pr=listaProfesores.begin();
+        for(unsigned int i=0;i<numProf;i++){
+          if((*it_pr)->getId()==l){
+            tfe->setCoTutor(*it_pr);
+            i=numProf;
+          }
+          it_pr++;
+        }
+      }
 
       getline(fs,l);
       string name;
@@ -1397,7 +1550,7 @@ void CampusVirtual::cargarListas() {
         getline(fs,l);
         id = l;
         Alumno* a = new Alumno(name,id);
-        tfe->setAlumnosApuntados(a);
+        tfe->setAlumnoApuntado(a);
 
         bool exit = false;
         list<Alumno*>::iterator aux = listaAlumnos.begin();
@@ -1508,11 +1661,22 @@ void CampusVirtual::mostrarListas(char t) {
       cout<<i<<". "<<"Asignatura: "<<(*it)->getName()
         <<" "<<"ID: "<<(*it)->getId()
         <<" "<<"Titulacion: "<<(*it)->getTitulacion()
-        <<" "<<"Creditos: "<<(*it)->getCredits()
-        <<" "<<"Profesor 1: "<<(*it)->getTeacher1().getName()
-        <<" "<<"Profesor 1: "<<(*it)->getTeacher1().getId()
-        <<" "<<"Profesor 2: "<<(*it)->getTeacher2().getName()
-        <<" "<<"Profesor 2: "<<(*it)->getTeacher2().getId()<<endl;
+        <<" "<<"Creditos: "<<(*it)->getCredits()<<endl;
+        if((*it)->getTeacher1() == NULL) {
+          cout<<" "<<"Profesor 1: "<<"Sin asignar"
+            <<" "<<"Profesor 1: "<<"Sin asignar"<<endl;
+        } else {
+          cout<<" "<<"Profesor 1: "<<(*it)->getTeacher1()->getName()
+            <<" "<<"Profesor 1: "<<(*it)->getTeacher1()->getId()<<endl;
+        }
+        if((*it)->getTeacher2() == NULL) {
+          cout<<" "<<"Profesor 2: "<<"Sin asignar"
+            <<" "<<"Profesor 2: "<<"Sin asignar"<<endl;
+
+        } else {
+          cout<<" "<<"Profesor 2: "<<(*it)->getTeacher2()->getName()
+            <<" "<<"Profesor 2: "<<(*it)->getTeacher2()->getId()<<endl;
+        }
         ++it;
         ++i;
     }
@@ -1536,14 +1700,19 @@ void CampusVirtual::mostrarListas(char t) {
 
     while(it != listaSeminarios.end()) {
       cout<<i<<". "<<"Seminario: "<<(*it)->getName()
-        <<" "<<"ID: "<<(*it)->getId()
-        <<" "<<"Supervisor: "<<(*it)->getSupervisor().getName()
-        <<" "<<(*it)->getSupervisor().getId()
-        <<" "<<"Ponente: "<<(*it)->getSpeaker()
-        <<" "<<"Capacidad: "<<(*it)->getCapacity()
-        <<" "<<"Fecha: "<<(*it)->getDate()->returnDay()
-        <<"/"<<(*it)->getDate()->returnMonth()
-        <<"/"<<(*it)->getDate()->returnYear()<<endl;
+        <<" "<<"ID: "<<(*it)->getId()<<endl;
+        if((*it)->getSupervisor() == NULL) {
+          cout<<" "<<"Supervisor: "<<"Sin asignar"
+            <<" "<<"Supervisor: "<<"Sin asignar"<<endl;
+        } else {
+          cout<<" "<<"Supervisor: "<<(*it)->getSupervisor()->getName()
+            <<" "<<"Supervisor: "<<(*it)->getSupervisor()->getId()<<endl;
+        }
+        cout<<" "<<"Ponente: "<<(*it)->getSpeaker()
+          <<" "<<"Capacidad: "<<(*it)->getCapacity()
+          <<" "<<"Fecha: "<<(*it)->getDate()->returnDay()
+          <<"/"<<(*it)->getDate()->returnMonth()
+          <<"/"<<(*it)->getDate()->returnYear()<<endl;
         ++it;
         ++i;
     }
@@ -1568,11 +1737,22 @@ void CampusVirtual::mostrarListas(char t) {
     while(it != listaTFE.end()) {
       cout<<i<<". "<<"TFE: "<<(*it)->getName()
         <<" "<<"ID: "<<(*it)->getId()
-        <<" "<<"Titulacion: "<<(*it)->getTitulacion()
-        <<" "<<"Tutor: "<<(*it)->getTutor().getName()
-        <<" "<<"Tutor: "<<(*it)->getTutor().getId()
-        <<" "<<"Co-Tutor: "<<(*it)->getCoTutor().getName()
-        <<" "<<"Co-Tutor: "<<(*it)->getCoTutor().getId()<<endl;
+        <<" "<<"Titulacion: "<<(*it)->getTitulacion()<<endl;
+        if((*it)->getTutor() == NULL) {
+          cout<<" "<<"Tutor: "<<"Sin asignar"
+            <<" "<<"Tutor: "<<"Sin asignar"<<endl;
+        } else {
+          cout<<" "<<"Tutor: "<<(*it)->getTutor()->getName()
+            <<" "<<"Tutor: "<<(*it)->getTutor()->getId()<<endl;
+        }
+        if((*it)->getCoTutor() == NULL) {
+          cout<<" "<<"CoTutor: "<<"Sin asignar"
+            <<" "<<"CoTutor: "<<"Sin asignar"<<endl;
+
+        } else {
+          cout<<" "<<"CoTutor: "<<(*it)->getCoTutor()->getName()
+            <<" "<<"CoTutor: "<<(*it)->getCoTutor()->getId()<<endl;
+        }
         ++it;
         ++i;
     }
@@ -1589,7 +1769,7 @@ void CampusVirtual::mostrarListas(char t) {
 }
 
 void CampusVirtual::escribirLista() {
-  fstream fs("admins.dat", ios::out | ios::in | ios::trunc | ios::binary);
+  fstream fs("admins.dat", ios::out | ios::trunc | ios::binary);
   fs.seekp(0);
   list<Administrator*>::const_iterator it;
   it = listaAdmins.begin();
@@ -1638,12 +1818,19 @@ void CampusVirtual::escribirLista() {
     fs<<(*it4)->getName()<<"\n"<<flush;
     fs<<(*it4)->getId()<<"\n"<<flush;
     fs<<(*it4)->getTitulacion()<<"\n"<<flush;
-    fs<<(*it4)->getTeacher1().getName()<<"\n"<<flush;
-    fs<<(*it4)->getTeacher1().getId()<<"\n"<<flush;
-    fs<<(*it4)->getTeacher2().getName()<<"\n"<<flush;
-    fs<<(*it4)->getTeacher2().getId()<<"\n"<<flush;
+    if((*it4)->getTeacher1()==NULL){
+      fs << "NULL" <<"\n"<<flush;
+    }
+    else{
+      fs << (*it4)->getTeacher1()->getId() << "\n" <<flush;
+    }
+    if((*it4)->getTeacher2()==NULL){
+      fs << "NULL" <<"\n"<<flush;
+    }
+    else{
+      fs << (*it4)->getTeacher2()->getId() << "\n" <<flush;
+    }
     fs<<(*it4)->getCredits()<<"\n"<<flush;
-
 
     itAlumnos = (*it4)->getItBegin();
     for(; itAlumnos != (*it4)->getItEnd(); ++itAlumnos) {
@@ -1651,6 +1838,7 @@ void CampusVirtual::escribirLista() {
       fs<<(*itAlumnos)->getName()<<"\n"<<flush;
       fs<<(*itAlumnos)->getId()<<"\n"<<flush;
     }
+    fs<<"END"<<"\n"<<flush;
     ++it4;
   }
 
@@ -1664,8 +1852,13 @@ void CampusVirtual::escribirLista() {
     fs<<"Seminario"<<"\n"<<flush;
     fs<<(*it5)->getName()<<"\n"<<flush;
     fs<<(*it5)->getId()<<"\n"<<flush;
-    fs<<(*it5)->getSupervisor().getName()<<"\n"<<flush;
-    fs<<(*it5)->getSupervisor().getId()<<"\n"<<flush;
+
+    if((*it5)->getSupervisor()==NULL){
+      fs << "NULL" <<"\n"<<flush;
+    }
+    else{
+      fs << (*it5)->getSupervisor()->getId() << "\n" <<flush;
+    }
     fs<<(*it5)->getSpeaker()<<"\n"<<flush;
     fs<<(*it5)->getCapacity()<<"\n"<<flush;
     fs<<(*it5)->getDate()->returnDay()<<'/'<<flush;
@@ -1678,7 +1871,7 @@ void CampusVirtual::escribirLista() {
       fs<<(*itAlumnos)->getName()<<"\n"<<flush;
       fs<<(*itAlumnos)->getId()<<"\n"<<flush;
     }
-
+    fs<<"END"<<"\n"<<flush;
     ++it5;
   }
 
@@ -1693,18 +1886,27 @@ void CampusVirtual::escribirLista() {
     fs<<(*it6)->getName()<<"\n"<<flush;
     fs<<(*it6)->getId()<<"\n"<<flush;
     fs<<(*it6)->getTitulacion()<<"\n"<<flush;
-    fs<<(*it6)->getTutor().getName()<<"\n"<<flush;
-    fs<<(*it6)->getTutor().getId()<<"\n"<<flush;
-    fs<<(*it6)->getCoTutor().getName()<<"\n"<<flush;
-    fs<<(*it6)->getCoTutor().getId()<<"\n"<<flush;
 
-    itAlumnos = (*it6)->getItBegin();
-    for(; itAlumnos != (*it6)->getItEnd(); ++itAlumnos) {
-      fs<<"Lista"<<"\n"<<flush;
-      fs<<(*itAlumnos)->getName()<<"\n"<<flush;
-      fs<<(*itAlumnos)->getId()<<"\n"<<flush;
+    if((*it6)->getTutor()==NULL){
+      fs << "NULL" <<"\n"<<flush;
+    }
+    else{
+      fs << (*it6)->getTutor()->getId() << "\n" <<flush;
+    }
+    if((*it6)->getCoTutor()==NULL){
+      fs << "NULL" <<"\n"<<flush;
+    }
+    else{
+      fs << (*it6)->getCoTutor()->getId() << "\n" <<flush;
     }
 
+    if((*it6)->getAlumno()==NULL){
+      fs << "NULL" <<"\n"<<flush;
+    }
+    else{
+      fs << (*it6)->getAlumno()->getId() << "\n" << flush;
+    }
+    fs<<"END"<<"\n"<<flush;
     ++it6;
   }
 

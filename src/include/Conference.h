@@ -11,7 +11,7 @@ using namespace std;
 
 class Conference : public Resources{
 private:
-  Teacher supervisor;
+  Teacher* supervisor;
   string speaker;
   Date* date;
   int capacity;
@@ -24,8 +24,8 @@ public:
   virtual string getId();
   virtual void setName(string);
   virtual string getName();
-  void setSupervisor(Teacher);
-  Teacher& getSupervisor();
+  void setSupervisor(Teacher*);
+  Teacher* getSupervisor();
   void setSpeaker(string);
   string getSpeaker();
   void setDate(Date*);
@@ -35,6 +35,8 @@ public:
   list<Alumno*>::iterator getItBegin();
   list<Alumno*>::iterator getItEnd();
   void setAlumnosApuntados(Alumno*);
+  void eliminarAlumno(list<Alumno*>::iterator);
+  void NullS();
 
 };
 #endif //_Conference_H_

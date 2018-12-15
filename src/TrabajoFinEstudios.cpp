@@ -39,32 +39,37 @@ string TrabajoFinEstudios::getTitulacion() {
   return titulacion;
 }
 
-void TrabajoFinEstudios::setTutor(Teacher tutor) {
+void TrabajoFinEstudios::setTutor(Teacher* tutor) {
   this->tutor = tutor;
 }
 
-Teacher& TrabajoFinEstudios::getTutor() {
+Teacher* TrabajoFinEstudios::getTutor() {
   return tutor;
 }
 
-void TrabajoFinEstudios::setCoTutor(Teacher coTutor) {
+void TrabajoFinEstudios::setCoTutor(Teacher* coTutor) {
   this->coTutor = coTutor;
 }
 
-Teacher& TrabajoFinEstudios::getCoTutor() {
+Teacher* TrabajoFinEstudios::getCoTutor() {
   return coTutor;
 }
 
-void TrabajoFinEstudios::setAlumnosApuntados(Alumno* a) {
-  alumnoApuntados.push_back(a);
+void TrabajoFinEstudios::setAlumnoApuntado(Alumno* a) {
+  alumno = a;
 }
 
-list<Alumno*>::iterator TrabajoFinEstudios::getItBegin() {
-  list<Alumno*>::iterator it = alumnoApuntados.begin();
-  return it;
+Alumno* TrabajoFinEstudios::getAlumno() {
+  return alumno;
 }
 
-list<Alumno*>::iterator TrabajoFinEstudios::getItEnd() {
-  list<Alumno*>::iterator it = alumnoApuntados.end();
-  return it;
+void TrabajoFinEstudios::NullT(){
+  tutor = NULL;
+}
+void TrabajoFinEstudios::NullCT(){
+  coTutor = NULL;
+}
+
+void TrabajoFinEstudios::NullAlumno() {
+  alumno = NULL;
 }
