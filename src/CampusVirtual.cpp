@@ -33,7 +33,7 @@ int CampusVirtual::login() {
   string nombre;
   int user;
   bool error = true;
-  char* id = new char[9];
+  string id;
 
   do{
     /*ANSI escape codes:
@@ -47,14 +47,16 @@ int CampusVirtual::login() {
   } while (user > 3 || user < 1);
 
   do {
-    /*ANSI escape codes:
-    \033[2j clears the entire screen.
-    \033[1;1H position the cursor at row 1, column 1.*/
-    cout << "\033[2J\033[1;1H";
-    cout<<endl<<"Nombre: ";
-    cin>>nombre;
-    cout<<endl<<"NIA/ID: ";
-    cin>>id;
+    do{
+      /*ANSI escape codes:
+      \033[2j clears the entire screen.
+      \033[1;1H position the cursor at row 1, column 1.*/
+      cout << "\033[2J\033[1;1H";
+      cout<<endl<<"Nombre: ";
+      cin>>nombre;
+      cout<<endl<<"NIA/ID: ";
+      cin>>id;
+    }while(id.size()!=7);
 
     if(user == 1) {
       list<Alumno*>::const_iterator it;
@@ -103,7 +105,6 @@ int CampusVirtual::login() {
     }
   } while (error);
 
-  delete[] id;
   return user;
 }
 
@@ -237,20 +238,31 @@ void CampusVirtual::gestionarUsuarios() {
       string id;
       string nombre;
       char more;
+      int r;
 
       switch (t) {
         case '1':
           do {
-
-            /*ANSI escape codes:
-            \033[2j clears the entire screen.
-            \033[1;1H position the cursor at row 1, column 1.*/
-            cout<<"\033[2J\033[1;1H";
-            cout<<"Introduce el nuevo alumno: "<<endl;
-            cout<<"Nombre: ";
-            cin>>nombre;
-            cout<<endl<<"NIA: ";
-            cin>>id;
+            do{
+              r=0;
+              /*ANSI escape codes:
+              \033[2j clears the entire screen.
+              \033[1;1H position the cursor at row 1, column 1.*/
+              cout<<"\033[2J\033[1;1H";
+              cout<<"Introduce el nuevo alumno: "<<endl;
+              cout<<"Nombre: ";
+              cin>>nombre;
+              cout<<endl<<"NIA: ";
+              cin>>id;
+              list<Alumno*>::iterator it=listaAlumnos.begin();
+              for(unsigned int k=0;k<numAlum;k++){
+                if((*it)->getId()==id){
+                  r=1;
+                  cout<<"Alumno repetido"<<endl;
+                }
+                it++;
+              }
+            }while(id.size()!=7 || r==1);
 
             Alumno* a = new Alumno();
             a->setName(nombre);
@@ -264,17 +276,27 @@ void CampusVirtual::gestionarUsuarios() {
           } while(more == 'y');
         break;
         case '2':
-          do {
-
-            /*ANSI escape codes:
-            \033[2j clears the entire screen.
-            \033[1;1H position the cursor at row 1, column 1.*/
-            cout<<"\033[2J\033[1;1H";
-            cout<<"Introduce el nuevo profesor: "<<endl;
-            cout<<"Nombre: ";
-            cin>>nombre;
-            cout<<endl<<"ID: ";
-            cin>>id;
+          do{
+            do{
+              r=0;
+              /*ANSI escape codes:
+              \033[2j clears the entire screen.
+              \033[1;1H position the cursor at row 1, column 1.*/
+              cout<<"\033[2J\033[1;1H";
+              cout<<"Introduce el nuevo profesor: "<<endl;
+              cout<<"Nombre: ";
+              cin>>nombre;
+              cout<<endl<<"ID: ";
+              cin>>id;
+              list<Teacher*>::iterator it=listaProfesores.begin();
+              for(unsigned int k=0;k<numProf;k++){
+                if((*it)->getId()==id){
+                  r=1;
+                  cout<<"Profesor repetido"<<endl;
+                }
+                it++;
+              }
+            }while(id.size()!=7 || r==1);
 
             Teacher* a = new Teacher();
             a->setName(nombre);
@@ -289,16 +311,26 @@ void CampusVirtual::gestionarUsuarios() {
         break;
         case '3':
           do {
-
-            /*ANSI escape codes:
-            \033[2j clears the entire screen.
-            \033[1;1H position the cursor at row 1, column 1.*/
-            cout<<"\033[2J\033[1;1H";
-            cout<<"Introduce el nuevo administrador: "<<endl;
-            cout<<"Nombre: ";
-            cin>>nombre;
-            cout<<endl<<"ID: ";
-            cin>>id;
+            do{
+              r=0;
+              /*ANSI escape codes:
+              \033[2j clears the entire screen.
+              \033[1;1H position the cursor at row 1, column 1.*/
+              cout<<"\033[2J\033[1;1H";
+              cout<<"Introduce el nuevo administrador: "<<endl;
+              cout<<"Nombre: ";
+              cin>>nombre;
+              cout<<endl<<"ID: ";
+              cin>>id;
+              list<Administrator*>::iterator it=listaAdmins.begin();
+              for(unsigned int k=0;k<numAdmin;k++){
+                if((*it)->getId()==id){
+                  r=1;
+                  cout<<"Administrador repetido"<<endl;
+                }
+                it++;
+              }
+            }while(id.size()!=7 || r==1);
 
             Administrator* a = new Administrator();
             a->setName(nombre);
@@ -624,16 +656,19 @@ void CampusVirtual::gestionarRecursos() {
             list<Teacher*>::const_iterator it_pr;
             Teacher* teacher1 = new Teacher();
             Teacher* teacher2 = new Teacher();
-
-            /*ANSI escape codes:
-            \033[2j clears the entire screen.
-            \033[1;1H position the cursor at row 1, column 1.*/
-            cout<<"\033[2J\033[1;1H";
-            cout<<"Introduce la nueva asignatura: "<<endl;
-            cout<<"Nombre: ";
-            cin>>nombre;
-            cout<<endl<<"ID: ";
-            cin>>id;
+            do{
+              do{
+                /*ANSI escape codes:
+                \033[2j clears the entire screen.
+                \033[1;1H position the cursor at row 1, column 1.*/
+                cout<<"\033[2J\033[1;1H";
+                cout<<"Introduce la nueva asignatura: "<<endl;
+                cout<<"Nombre: ";
+                cin>>nombre;
+                cout<<endl<<"ID: ";
+                cin>>id;
+              }while(id.size()!=7);
+            }while(checkid(id));
             cout<<endl<<"Titulacion: ";
             cin>>titulacion;
 
@@ -705,15 +740,19 @@ void CampusVirtual::gestionarRecursos() {
 
             list<Teacher*>::const_iterator it_pr;
             Teacher* supervisor = new Teacher();
-            /*ANSI escape codes:
-            \033[2j clears the entire screen.
-            \033[1;1H position the cursor at row 1, column 1.*/
-            cout<<"\033[2J\033[1;1H";
-            cout<<"Introduce el nuevo seminario: "<<endl;
-            cout<<"Nombre: ";
-            cin>>nombre;
-            cout<<endl<<"ID: ";
-            cin>>id;
+            do{
+              do{
+                /*ANSI escape codes:
+                \033[2j clears the entire screen.
+                \033[1;1H position the cursor at row 1, column 1.*/
+                cout<<"\033[2J\033[1;1H";
+                cout<<"Introduce el nuevo seminario: "<<endl;
+                cout<<"Nombre: ";
+                cin>>nombre;
+                cout<<endl<<"ID: ";
+                cin>>id;
+              }while(id.size()!=7);
+            }while(checkid(id));
             cout<<endl<<"Ponente: ";
             cin>>speaker;
 
@@ -774,15 +813,19 @@ void CampusVirtual::gestionarRecursos() {
             list<Teacher*>::const_iterator it_pr;
             Teacher* tutor = new Teacher();
             Teacher* coTutor = new Teacher();
-            /*ANSI escape codes:
-            \033[2j clears the entire screen.
-            \033[1;1H position the cursor at row 1, column 1.*/
-            cout<<"\033[2J\033[1;1H";
-            cout<<"Introduce el nuevo TFE: "<<endl;
-            cout<<"Nombre: ";
-            cin>>nombre;
-            cout<<endl<<"ID: ";
-            cin>>id;
+            do{
+              do{
+                /*ANSI escape codes:
+                \033[2j clears the entire screen.
+                \033[1;1H position the cursor at row 1, column 1.*/
+                cout<<"\033[2J\033[1;1H";
+                cout<<"Introduce el nuevo TFE: "<<endl;
+                cout<<"Nombre: ";
+                cin>>nombre;
+                cout<<endl<<"ID: ";
+                cin>>id;
+              }while(id.size()!=7);
+            }while(checkid(id));
             cout<<endl<<"Titulacion: ";
             cin>>titulacion;
 
@@ -1279,7 +1322,7 @@ void CampusVirtual::bajaRecurso() {
 
     switch(t) {
       case '4':
-        mostrarRecursosAlta();
+        mostrarRecursosBaja();
         cout<<"¿En que asignatura quieres darte de baja? (id)"<<endl;
         cin>>id;
 
@@ -1310,7 +1353,7 @@ void CampusVirtual::bajaRecurso() {
 
       break;
       case '5':
-      mostrarRecursosAlta();
+      mostrarRecursosBaja();
       cout<<"¿En que seminario quieres darte de baja? (id)"<<endl;
       cin>>id;
 
@@ -1340,7 +1383,7 @@ void CampusVirtual::bajaRecurso() {
       }
       break;
       case '6':
-      mostrarRecursosAlta();
+      mostrarRecursosBaja();
       cout<<"¿En que TFE quieres darte de baja? (id)"<<endl;
       cin>>id;
 
@@ -1697,6 +1740,110 @@ void CampusVirtual::mostrarRecursosAlta() {
    //27 is ESC key in ASCII
    } while(temp != 27);
    menuAlumno();
+
+}
+
+void CampusVirtual::mostrarRecursosBaja() {
+  list<Alumno*>::iterator ita = listaAlumnos.begin();
+  list<Subjects*>::iterator asignaturas;
+  list<Conference*>::iterator seminarios;
+  list<TrabajoFinEstudios*>::iterator tfe;
+  bool exit = false;
+  int i = 0;
+
+  while(!exit) {
+   if(currentUserName == (*ita)->getName()) {
+     if(currentUserId == (*ita)->getId()) {
+       exit = true;
+     }
+   }
+   //Evita que se incremente si se ha encontrado los datos en la lista
+   if(!exit) {
+     ++ita;
+   }
+ }
+
+   /*ANSI escape codes:
+   \033[2j clears the entire screen.
+   \033[1;1H position the cursor at row 1, column 1.*/
+   cout<<"\033[2J\033[1;1H";
+
+   asignaturas = (*ita)->getItBegin();
+   cout<<"ASIGNATURAS: "<<endl;
+   while(asignaturas != (*ita)->getItEnd()) {
+     cout<<i<<". "<<"Asignatura: "<<(*asignaturas)->getName()
+       <<" "<<"ID: "<<(*asignaturas)->getId()
+       <<" "<<"Titulacion: "<<(*asignaturas)->getTitulacion()
+       <<" "<<"Creditos: "<<(*asignaturas)->getCredits()<<endl;
+       if((*asignaturas)->getTeacher1() == NULL) {
+         cout<<" "<<"Profesor 1: No asignado"
+         <<" "<<"Profesor 1: No asignado"<<endl;
+       } else {
+         cout<<" "<<"Profesor 1: "<<(*asignaturas)->getTeacher1()->getName()
+         <<" "<<"Profesor 1: "<<(*asignaturas)->getTeacher1()->getId()<<endl;
+       }
+       if((*asignaturas)->getTeacher2() == NULL) {
+         cout<<" "<<"Profesor 2: No asignado"
+         <<" "<<"Profesor 2: No asignado"<<endl;
+       } else {
+         cout<<" "<<"Profesor 2: "<<(*asignaturas)->getTeacher2()->getName()
+         <<" "<<"Profesor 2: "<<(*asignaturas)->getTeacher2()->getId()<<endl;
+       }
+       ++asignaturas;
+       ++i;
+   }
+
+   seminarios = (*ita)->getItBeginConference();
+   cout<<"SEMINARIOS: "<<endl;
+   while(seminarios != (*ita)->getItEndConference()) {
+     cout<<i<<". "<<"Seminario: "<<(*seminarios)->getName()
+       <<" "<<"ID: "<<(*seminarios)->getId()<<endl;
+       if((*seminarios)->getSupervisor() == NULL) {
+         cout<<" "<<"Supervisor: No asignado"
+         <<" "<<"Id: no asignado"<<endl;
+       } else {
+         cout<<" "<<"Supervisor: "<<(*seminarios)->getSupervisor()->getName()
+         <<" "<<(*seminarios)->getSupervisor()->getId()<<endl;
+       }
+       cout<<" "<<"Ponente: "<<(*seminarios)->getSpeaker()
+       <<" "<<"Capacidad: "<<(*seminarios)->getCapacity()
+       <<" "<<"Fecha: "<<(*seminarios)->getDate()->returnDay()
+       <<"/"<<(*seminarios)->getDate()->returnMonth()
+       <<"/"<<(*seminarios)->getDate()->returnYear()<<endl;
+       ++seminarios;
+       ++i;
+   }
+
+   tfe = (*ita)->getItBeginTFE();
+   cout<<"TRABAJOS FIN ESTUDIOS: "<<endl;
+   while(tfe != (*ita)->getItEndTFE()) {
+     cout<<i<<". "<<"TFE: "<<(*tfe)->getName()
+       <<" "<<"ID: "<<(*tfe)->getId()
+       <<" "<<"Titulacion: "<<(*tfe)->getTitulacion()<<endl;
+       if((*tfe)->getTutor() == NULL) {
+         cout<<" "<<"Tutor: No asignado"
+         <<" "<<"Tutor: No asignado"<<endl;
+       } else {
+         cout<<" "<<"Tutor: "<<(*tfe)->getTutor()->getName()
+         <<" "<<"Tutor: "<<(*tfe)->getTutor()->getId()<<endl;
+       }
+       if((*tfe)->getCoTutor() == NULL) {
+         cout<<" "<<"Co-Tutor: No asignado"
+         <<" "<<"Co-Tutor: No asignado"<<endl;
+       } else {
+         cout<<" "<<"Co-Tutor: "<<(*tfe)->getCoTutor()->getName()
+         <<" "<<"Co-Tutor: "<<(*tfe)->getCoTutor()->getId()<<endl;
+       }
+       ++tfe;
+       ++i;
+   }
+
+   char temp;
+   do {
+     cout<<"Presiona ESC para continuar";
+     cin>>temp;
+   //27 is ESC key in ASCII
+   } while(temp != 27);
 
 }
 
@@ -2697,4 +2844,11 @@ void CampusVirtual::cerrarSesion() {
   listaSeminarios.clear();
   listaTFE.clear();
   inicio();
+}
+
+bool CampusVirtual::checkid(string a){
+  if(a[0]>='A' && a[0]<='Z' && a[1]>='A' && a[1]<='Z' && a[2]>='A' && a[2]<='Z' && a[3]>='0' && a[3]<='9' && a[4]>='0' && a[4]<='9' && a[5]>='0' && a[5]<='9' && a[6]>='0' && a[6]<='9'){
+    return (false);
+  }
+  return (true);
 }

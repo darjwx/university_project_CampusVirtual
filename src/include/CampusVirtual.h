@@ -42,8 +42,10 @@ public:
   void bajaRecurso();
   void calificar();
   void mostrarRecursosAlta();
+  void mostrarRecursosBaja();
   void mostrarNotas();
   void PmodificarRecursos();
+  bool checkid(string);
 
   void cargarListas();
   void mostrarListas(char);
