@@ -34,8 +34,11 @@ public:
   int getCapacity();
   list<Alumno*>::iterator getItBegin();
   list<Alumno*>::iterator getItEnd();
+  list<Alumno*>::iterator getItPos(int);
   void setAlumnosApuntados(Alumno*);
   void eliminarAlumno(list<Alumno*>::iterator);
+  string getIdAlumno(list<Alumno*>::iterator);
+  int getNumAl();
   void NullS();
 
 };

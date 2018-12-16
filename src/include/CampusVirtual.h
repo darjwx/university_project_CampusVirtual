@@ -40,7 +40,10 @@ public:
   void gestionarRecursos();
   void altaRecurso();
   void bajaRecurso();
+  void calificar();
   void mostrarRecursosAlta();
+  void mostrarNotas();
+  void PmodificarRecursos();
 
   void cargarListas();
   void mostrarListas(char);

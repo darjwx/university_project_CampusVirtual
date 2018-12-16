@@ -16,8 +16,6 @@ private:
   Teacher* teacher1;
   Teacher* teacher2;
   unsigned int credits;
-  //0-10
-  unsigned int grade;
   list<Alumno*> alumnoApuntados;
 
 public:
@@ -32,8 +30,6 @@ public:
   string getTitulacion();
   void setCredits(unsigned int);
   unsigned int getCredits();
-  void setGrade(unsigned int);
-  unsigned int getGrade();
   void setTeacher(Teacher*, Teacher*);
   void setTeacher1(Teacher*);
   void setTeacher2(Teacher*);
@@ -41,7 +37,11 @@ public:
   Teacher* getTeacher2();
   list<Alumno*>::iterator getItBegin();
   list<Alumno*>::iterator getItEnd();
+  list<Alumno*>::iterator getItPos(int);
   void setAlumnosApuntados(Alumno*);
+  void eliminarAlumno(list<Alumno*>::iterator);
+  string getIdAlumno(list<Alumno*>::iterator);
+  int getNumAl();
   void NullT1();
   void NullT2();
 

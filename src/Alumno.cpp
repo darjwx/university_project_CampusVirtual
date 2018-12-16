@@ -68,6 +68,30 @@ list<TrabajoFinEstudios*>::iterator Alumno::getItEndTFE() {
   return it;
 }
 
+map<string,unsigned int>::iterator Alumno::getItBeginNotas() {
+  map<string,unsigned int>::iterator it = notas.begin();
+
+  return it;
+}
+
+map<string,unsigned int>::iterator Alumno::getItEndNotas() {
+  map<string,unsigned int>::iterator it = notas.end();
+
+  return it;
+}
+
+map<string,unsigned int>::iterator Alumno::findMapPosition(string key) {
+  return notas.find(key);
+}
+
+void Alumno::setGrades(string id, unsigned int grade) {
+  notas.insert(pair<string,unsigned int>(id,grade));
+}
+
+void Alumno::modifyGrades(string id, unsigned int grade) {
+  notas[id] = grade;
+}
+
 void Alumno::setSubjects(Subjects* s) {
   asignaturas.push_back(s);
 }
@@ -77,4 +101,14 @@ void Alumno::setConferences(Conference* c) {
 }
 void Alumno::setTFE(TrabajoFinEstudios* t) {
   tfe.push_back(t);
+}
+
+void Alumno::removeSubjects(list<Subjects*>::iterator it) {
+  asignaturas.erase(it);
+}
+void Alumno::removeConferences(list<Conference*>::iterator it) {
+  seminarios.erase(it);
+}
+void Alumno::removeTFE(list<TrabajoFinEstudios*>::iterator it) {
+  tfe.erase(it);
 }

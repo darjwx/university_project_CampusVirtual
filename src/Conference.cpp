@@ -73,12 +73,28 @@ list<Alumno*>::iterator Conference::getItEnd() {
   return it;
 }
 
+list<Alumno*>::iterator Conference::getItPos(int n){
+  list<Alumno*>::iterator it = alumnoApuntados.begin();
+  for(int i=0;i<n;++i){
+    ++it;
+  }
+  return(it);
+}
+
 void Conference::setAlumnosApuntados(Alumno* a) {
   alumnoApuntados.push_back(a);
 }
 
 void Conference::eliminarAlumno(list<Alumno*>::iterator it) {
   it = alumnoApuntados.erase(it);
+}
+
+string Conference::getIdAlumno(list<Alumno*>::iterator it){
+  return((*it)->getId());
+}
+
+int Conference::getNumAl(){
+  return(alumnoApuntados.size());
 }
 
 void Conference::NullS(){

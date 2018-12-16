@@ -47,14 +47,6 @@ unsigned int Subjects::getCredits() {
   return credits;
 }
 
-void Subjects::setGrade(unsigned int grade) {
-  this->grade = grade;
-}
-
-unsigned int Subjects::getGrade() {
-  return grade;
-}
-
 void Subjects::setTeacher(Teacher* t1, Teacher* t2) {
   teacher1 = t1;
   teacher2 = t2;
@@ -79,6 +71,11 @@ void Subjects::setAlumnosApuntados(Alumno* a) {
   alumnoApuntados.push_back(a);
 }
 
+
+void Subjects::eliminarAlumno(list<Alumno*>::iterator it) {
+  it = alumnoApuntados.erase(it);
+}
+
 list<Alumno*>::iterator Subjects::getItBegin() {
   list<Alumno*>::iterator it = alumnoApuntados.begin();
   return it;
@@ -87,6 +84,22 @@ list<Alumno*>::iterator Subjects::getItBegin() {
 list<Alumno*>::iterator Subjects::getItEnd() {
   list<Alumno*>::iterator it = alumnoApuntados.end();
   return it;
+}
+
+list<Alumno*>::iterator Subjects::getItPos(int n){
+  list<Alumno*>::iterator it = alumnoApuntados.begin();
+  for(int i=0;i<n;++i){
+    ++it;
+  }
+  return(it);
+}
+
+string Subjects::getIdAlumno(list<Alumno*>::iterator it){
+  return((*it)->getId());
+}
+
+int Subjects::getNumAl(){
+  return(alumnoApuntados.size());
 }
 
 void Subjects::NullT1(){
