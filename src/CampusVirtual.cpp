@@ -126,7 +126,7 @@ void CampusVirtual::menuAlumno() {
       altaRecurso();
     break;
     case '2':
-      //bajaRecurso();
+      bajaRecurso();
     break;
     case '3':
       mostrarRecursosAlta();
